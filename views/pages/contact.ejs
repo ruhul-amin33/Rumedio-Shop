@@ -1,0 +1,95 @@
+<section style="background:#F5F5F5; padding:48px 16px; min-height:70vh;">
+  <div style="max-width:1000px; margin:0 auto;">
+    
+    <!-- Heading -->
+    <div style="text-align:center; margin-bottom:40px;">
+      <h2 style="font-size:1.6rem; font-weight:700; color:#212121; margin:0 0 8px; font-family:'Inter',sans-serif;">যোগাযোগ করুন</h2>
+      <div style="width:56px; height:3px; background:#F57224; border-radius:2px; margin:0 auto 14px;"></div>
+      <p style="color:#616161; font-size:0.9rem; max-width:520px; margin:0 auto; font-family:'Noto Sans Bengali',sans-serif;">আপনার অর্ডার, পণ্য, শিপিং বা যেকোনো প্রশ্ন থাকলে আমাদের সাথে যোগাযোগ করুন।</p>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px;">
+      
+      <!-- Contact Form -->
+      <div style="background:white; border-radius:12px; padding:32px; border:1px solid #E0E0E0; box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+        <h3 style="font-size:1rem; font-weight:700; color:#212121; margin:0 0 20px; font-family:'Noto Sans Bengali',sans-serif; display:flex; align-items:center; gap:8px;">
+          <i class="fas fa-paper-plane" style="color:#F57224;"></i> বার্তা পাঠান
+        </h3>
+        <% if (success) { %>
+          <div style="background:#ECFDF5; border:1px solid #6EE7B7; color:#059669; padding:10px 14px; border-radius:6px; margin-bottom:16px; font-size:0.85rem; font-family:'Noto Sans Bengali',sans-serif;">
+            ✅ <%= success %>
+          </div>
+        <% } %>
+        <form action="/submit-msg" method="POST" style="display:flex; flex-direction:column; gap:14px;">
+          <input type="text" name="name" placeholder="আপনার নাম *" required
+            style="width:100%; padding:11px 14px; border:1.5px solid #E0E0E0; border-radius:6px; font-size:0.88rem; outline:none; box-sizing:border-box; font-family:'Noto Sans Bengali',sans-serif; transition:border 0.2s;"
+            onfocus="this.style.borderColor='#F57224'" onblur="this.style.borderColor='#E0E0E0'">
+          <input type="email" name="email" placeholder="ইমেইল *" required
+            style="width:100%; padding:11px 14px; border:1.5px solid #E0E0E0; border-radius:6px; font-size:0.88rem; outline:none; box-sizing:border-box; transition:border 0.2s;"
+            onfocus="this.style.borderColor='#F57224'" onblur="this.style.borderColor='#E0E0E0'">
+          <textarea name="comment" rows="4" placeholder="আপনার মন্তব্য *" required
+            style="width:100%; padding:11px 14px; border:1.5px solid #E0E0E0; border-radius:6px; font-size:0.88rem; outline:none; box-sizing:border-box; resize:vertical; font-family:'Noto Sans Bengali',sans-serif; transition:border 0.2s;"
+            onfocus="this.style.borderColor='#F57224'" onblur="this.style.borderColor='#E0E0E0'"></textarea>
+          <button type="submit"
+            style="background:#F57224; color:white; border:none; padding:12px 24px; border-radius:6px; font-size:0.9rem; font-weight:700; cursor:pointer; transition:background 0.2s; font-family:'Noto Sans Bengali',sans-serif; align-self:flex-start;"
+            onmouseover="this.style.background='#D4601A'" onmouseout="this.style.background='#F57224'">
+            <i class="fas fa-paper-plane" style="margin-right:6px;"></i> পাঠান
+          </button>
+        </form>
+      </div>
+
+      <!-- Contact Info -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        
+        <div style="background:white; border-radius:12px; padding:24px; border:1px solid #E0E0E0; box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <div style="display:flex; align-items:flex-start; gap:14px;">
+            <div style="width:44px; height:44px; border-radius:50%; background:#FFF3EC; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <i class="fas fa-phone-alt" style="color:#F57224; font-size:1rem;"></i>
+            </div>
+            <div>
+              <h4 style="margin:0 0 4px; font-size:0.88rem; font-weight:700; color:#212121; font-family:'Inter',sans-serif;">ফোন</h4>
+              <a href="tel:+8801641922591" style="color:#616161; font-size:0.85rem; text-decoration:none; font-family:'Noto Sans Bengali',sans-serif;" onmouseover="this.style.color='#F57224'" onmouseout="this.style.color='#616161'">+8801641922591</a>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:white; border-radius:12px; padding:24px; border:1px solid #E0E0E0; box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <div style="display:flex; align-items:flex-start; gap:14px;">
+            <div style="width:44px; height:44px; border-radius:50%; background:#FFF3EC; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <i class="fas fa-envelope" style="color:#F57224; font-size:1rem;"></i>
+            </div>
+            <div>
+              <h4 style="margin:0 0 4px; font-size:0.88rem; font-weight:700; color:#212121; font-family:'Inter',sans-serif;">ইমেইল</h4>
+              <span style="color:#616161; font-size:0.85rem;">imranmolla3102003@gmail.com</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:white; border-radius:12px; padding:24px; border:1px solid #E0E0E0; box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <div style="display:flex; align-items:flex-start; gap:14px;">
+            <div style="width:44px; height:44px; border-radius:50%; background:#E8FFF5; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <i class="fab fa-whatsapp" style="color:#25D366; font-size:1.1rem;"></i>
+            </div>
+            <div>
+              <h4 style="margin:0 0 4px; font-size:0.88rem; font-weight:700; color:#212121; font-family:'Inter',sans-serif;">WhatsApp</h4>
+              <a href="https://wa.me/8801641922591" target="_blank" style="color:#25D366; font-size:0.85rem; text-decoration:none; font-family:'Noto Sans Bengali',sans-serif; font-weight:600;">এখনই মেসেজ করুন →</a>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:white; border-radius:12px; padding:24px; border:1px solid #E0E0E0; box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <h4 style="margin:0 0 14px; font-size:0.88rem; font-weight:700; color:#212121; font-family:'Inter',sans-serif;">
+            <i class="fas fa-share-alt" style="color:#F57224; margin-right:6px;"></i> আমাদের অনুসরণ করুন
+          </h4>
+          <div style="display:flex; gap:10px;">
+            <a target="_blank" href="https://www.facebook.com/share/17XRsmH8XJ/" style="width:38px; height:38px; border-radius:50%; background:#1877F2; display:flex; align-items:center; justify-content:center; color:white; text-decoration:none; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'"><i class="fab fa-facebook" style="font-size:0.9rem;"></i></a>
+            <a target="_blank" href="https://www.instagram.com/lens_bazaar_bd?igsh=MXM3Znhka3JtdW5vbA==" style="width:38px; height:38px; border-radius:50%; background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); display:flex; align-items:center; justify-content:center; color:white; text-decoration:none;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'"><i class="fab fa-instagram" style="font-size:0.9rem;"></i></a>
+            <a target="_blank" href="https://youtube.com/@lensbazaarbd" style="width:38px; height:38px; border-radius:50%; background:#FF0000; display:flex; align-items:center; justify-content:center; color:white; text-decoration:none;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'"><i class="fab fa-youtube" style="font-size:0.9rem;"></i></a>
+            <a target="_blank" href="https://www.tiktok.com/@lensbazaarbd" style="width:38px; height:38px; border-radius:50%; background:#000000; display:flex; align-items:center; justify-content:center; color:white; text-decoration:none;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'"><i class="fab fa-tiktok" style="font-size:0.9rem;"></i></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

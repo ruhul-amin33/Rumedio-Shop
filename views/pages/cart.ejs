@@ -1,0 +1,98 @@
+<div style="max-width:1100px; margin:0 auto; padding:24px 16px;">
+
+  <!-- Breadcrumb -->
+  <div style="display:flex; align-items:center; gap:6px; font-size:0.78rem; color:#9E9E9E; margin-bottom:20px; font-family:'Noto Sans Bengali',sans-serif;">
+    <a href="/" style="color:#616161; text-decoration:none;" onmouseover="this.style.color='#F57224'" onmouseout="this.style.color='#616161'">হোম</a>
+    <span>›</span>
+    <span style="color:#212121; font-weight:600;">কার্ট</span>
+  </div>
+
+  <h1 style="font-size:1.35rem; font-weight:700; color:#212121; margin:0 0 20px; font-family:'Inter',sans-serif;">
+    <i class="fas fa-shopping-cart" style="color:#F57224; margin-right:8px;"></i> আপনার কার্ট
+  </h1>
+
+  <a href="/products/category/all" style="display:inline-flex; align-items:center; gap:6px; background:#1A2A4A; color:white; padding:9px 18px; border-radius:4px; font-size:0.82rem; font-weight:600; text-decoration:none; margin-bottom:20px;" onmouseover="this.style.background='#F57224'" onmouseout="this.style.background='#1A2A4A'">
+    <i class="fas fa-plus"></i> আরও পণ্য কিনুন
+  </a>
+
+  <div style="display:grid; grid-template-columns:1fr; gap:20px;">
+    
+    <!-- Cart Table -->
+    <div style="background:white; border-radius:8px; border:1px solid #E0E0E0; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+      <div style="overflow-x:auto;">
+        <table id="cart-table" style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr style="background:#F8F8F8; border-bottom:2px solid #E0E0E0;">
+              <th style="padding:14px 16px; text-align:left; font-size:0.78rem; font-weight:700; color:#9E9E9E; text-transform:uppercase; letter-spacing:0.5px; font-family:'Inter',sans-serif;">পণ্য</th>
+              <th style="padding:14px 16px; text-align:center; font-size:0.78rem; font-weight:700; color:#9E9E9E; text-transform:uppercase; letter-spacing:0.5px;" class="hidden sm:table-cell">পরিমাণ</th>
+              <th style="padding:14px 16px; text-align:right; font-size:0.78rem; font-weight:700; color:#9E9E9E; text-transform:uppercase; letter-spacing:0.5px;">মোট</th>
+            </tr>
+          </thead>
+          <tbody id="cart-items-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Summary & Delivery -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px;">
+
+      <!-- Delivery -->
+      <div style="background:white; border-radius:8px; border:1px solid #E0E0E0; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+        <h3 style="font-size:0.92rem; font-weight:700; color:#212121; margin:0 0 14px; padding-bottom:10px; border-bottom:1px solid #F0F0F0; font-family:'Noto Sans Bengali',sans-serif;">
+          <i class="fas fa-truck" style="color:#F57224; margin-right:6px;"></i> ডেলিভারি এলাকা
+        </h3>
+        <label style="display:flex; align-items:center; gap:10px; padding:10px 12px; border:1.5px solid #E0E0E0; border-radius:6px; cursor:pointer; margin-bottom:10px; transition:all 0.2s;" onmouseover="this.style.borderColor='#F57224'; this.style.background='#FFF3EC'" onmouseout="this.style.borderColor='#E0E0E0'; this.style.background='transparent'">
+          <input type="radio" name="deliveryArea" value="dhaka" class="area-radio" style="accent-color:#F57224;">
+          <span style="font-size:0.88rem; font-weight:600; color:#212121; font-family:'Noto Sans Bengali',sans-serif;">🏙️ ঢাকার ভিতরে</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:10px; padding:10px 12px; border:1.5px solid #E0E0E0; border-radius:6px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.borderColor='#F57224'; this.style.background='#FFF3EC'" onmouseout="this.style.borderColor='#E0E0E0'; this.style.background='transparent'">
+          <input type="radio" name="deliveryArea" value="outside" class="area-radio" style="accent-color:#F57224;">
+          <span style="font-size:0.88rem; font-weight:600; color:#212121; font-family:'Noto Sans Bengali',sans-serif;">🗺️ ঢাকার বাইরে</span>
+        </label>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:#F8F8F8; border-radius:6px; margin-top:12px;">
+          <span style="font-size:0.85rem; color:#616161; font-family:'Noto Sans Bengali',sans-serif;">ডেলিভারি চার্জ</span>
+          <span id="delivery-charge" style="font-weight:700; color:#212121; font-family:'Noto Sans Bengali',sans-serif;">৳০</span>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div style="background:white; border-radius:8px; border:1px solid #E0E0E0; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+        <h3 style="font-size:0.92rem; font-weight:700; color:#212121; margin:0 0 14px; padding-bottom:10px; border-bottom:1px solid #F0F0F0; font-family:'Inter',sans-serif;">
+          <i class="fas fa-receipt" style="color:#F57224; margin-right:6px;"></i> অর্ডার সামারি
+        </h3>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span style="font-size:0.85rem; color:#616161; font-family:'Noto Sans Bengali',sans-serif;">পণ্যের মূল্য</span>
+          <span id="subtotal" style="font-weight:600; color:#212121; font-family:'Noto Sans Bengali',sans-serif;">৳০</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-top:2px dashed #F0F0F0; border-bottom:2px dashed #F0F0F0; margin:10px 0;">
+          <span style="font-size:0.95rem; font-weight:700; color:#212121; font-family:'Noto Sans Bengali',sans-serif;">সর্বমোট</span>
+          <span id="grand-total" style="font-size:1.2rem; font-weight:800; color:#F57224; font-family:'Noto Sans Bengali',sans-serif;">৳০</span>
+        </div>
+        <button id="checkoutBtn" disabled
+          style="display:block; width:100%; padding:14px; background:#F57224; color:white; border:none; border-radius:6px; font-size:0.95rem; font-weight:700; cursor:pointer; transition:background 0.2s; margin-top:12px; font-family:'Noto Sans Bengali',sans-serif;"
+          onmouseover="if(!this.disabled) this.style.background='#D4601A'" onmouseout="this.style.background='#F57224'">
+          <i class="fas fa-check-circle" style="margin-right:8px;"></i> অর্ডার করুন
+        </button>
+        <p style="margin:10px 0 0; text-align:center; font-size:0.75rem; color:#9E9E9E; font-family:'Noto Sans Bengali',sans-serif;">
+          <i class="fas fa-lock" style="margin-right:4px; color:#00A650;"></i> নিরাপদ পেমেন্ট
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/js/cart.js"></script>
+<script>
+  // Sync subtotal display
+  const origGrandTotal = document.getElementById('grand-total');
+  const subtotalEl = document.getElementById('subtotal');
+  const observer = new MutationObserver(() => {
+    if(subtotalEl && origGrandTotal) {
+      const deliveryText = document.getElementById('delivery-charge').textContent;
+      const delivery = parseInt(deliveryText.replace(/[^\d]/g,'')) || 0;
+      const grandText = origGrandTotal.textContent;
+      const grand = parseInt(grandText.replace(/[^\d]/g,'')) || 0;
+      subtotalEl.textContent = '৳' + (grand - delivery);
+    }
+  });
+  if(origGrandTotal) observer.observe(origGrandTotal, {childList:true, subtree:true, characterData:true});
+</script>

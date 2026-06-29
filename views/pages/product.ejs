@@ -1,0 +1,420 @@
+<style>
+.pd-wrap{max-width:1100px;margin:0 auto;padding:24px 16px;}
+.pd-breadcrumb{display:flex;align-items:center;gap:6px;font-size:0.76rem;color:#9E9E9E;margin-bottom:22px;flex-wrap:wrap;}
+.pd-breadcrumb a{color:#616161;text-decoration:none;transition:color 0.15s;}
+.pd-breadcrumb a:hover{color:#F57224;}
+.pd-main{background:#fff;border-radius:14px;border:1px solid #EBEBEB;padding:28px;box-shadow:0 4px 20px rgba(0,0,0,0.06);display:grid;grid-template-columns:1fr 1fr;gap:36px;}
+.pd-gallery{display:flex;flex-direction:column;}
+.pd-main-img{position:relative;border-radius:12px;overflow:hidden;background:#F8F8F8;border:1px solid #F0F0F0;aspect-ratio:1;}
+.pd-main-img img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity 0.25s;}
+.pd-nav-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.92);border:1px solid #E0E0E0;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:1rem;color:#424242;box-shadow:0 2px 8px rgba(0,0,0,0.12);display:flex;align-items:center;justify-content:center;transition:all 0.15s;z-index:2;}
+.pd-nav-btn:hover{background:#F57224;color:#fff;border-color:#F57224;}
+.pd-thumbs{display:flex;gap:8px;margin-top:12px;overflow-x:auto;padding-bottom:4px;}
+.pd-thumb{width:66px;height:66px;object-fit:cover;border-radius:7px;cursor:pointer;border:2px solid #E0E0E0;transition:border 0.15s;flex-shrink:0;}
+.pd-thumb.active,.pd-thumb:hover{border-color:#F57224;}
+.pd-info{display:flex;flex-direction:column;}
+.pd-cat-tag{display:inline-flex;align-items:center;gap:5px;background:#FFF3EC;color:#F57224;font-size:0.72rem;font-weight:700;padding:4px 12px;border-radius:20px;text-decoration:none;margin-bottom:12px;border:1px solid rgba(245,114,36,0.2);}
+.pd-title{font-size:1.3rem;font-weight:700;color:#1A2A4A;margin:0 0 18px;line-height:1.35;font-family:'Noto Sans Bengali',sans-serif;}
+.pd-price-box{background:#FAFAFA;border-radius:10px;padding:16px 18px;margin-bottom:18px;border:1px solid #F0F0F0;}
+.pd-price-sale{font-size:1.9rem;font-weight:800;color:#F57224;line-height:1;font-family:'Noto Sans Bengali',sans-serif;}
+.pd-price-orig{font-size:0.92rem;color:#BDBDBD;text-decoration:line-through;margin-left:8px;font-family:'Noto Sans Bengali',sans-serif;}
+.pd-save-badge{background:#E8192C;color:#fff;font-size:0.7rem;font-weight:800;padding:3px 10px;border-radius:4px;margin-left:8px;}
+.pd-badges{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px;}
+.pd-badge-item{font-size:0.72rem;font-weight:600;padding:4px 11px;border-radius:20px;display:inline-flex;align-items:center;gap:5px;}
+.pd-badge-green{background:#ECFDF5;color:#059669;border:1px solid #A7F3D0;}
+.pd-badge-blue{background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;}
+.pd-badge-orange{background:#FFF3EC;color:#F57224;border:1px solid #FED7AA;}
+.pd-qty-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.pd-qty{display:inline-flex;align-items:center;border:1.5px solid #E0E0E0;border-radius:7px;overflow:hidden;}
+.pd-qty-btn{width:36px;height:40px;background:#F5F5F5;border:none;cursor:pointer;font-size:1rem;font-weight:700;color:#616161;transition:all 0.15s;}
+.pd-qty-btn:hover{background:#F57224;color:#fff;}
+.pd-qty-val{width:44px;text-align:center;font-size:0.95rem;font-weight:700;color:#212121;border:none;outline:none;font-family:'Inter',sans-serif;}
+.pd-add-btn{flex:1;background:#F57224;color:#fff;border:none;padding:12px 20px;border-radius:7px;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Noto Sans Bengali',sans-serif;box-shadow:0 4px 14px rgba(245,114,36,0.25);}
+.pd-add-btn:hover{background:#D4601A;transform:translateY(-1px);box-shadow:0 6px 18px rgba(245,114,36,0.35);}
+.pd-order-btn{width:100%;background:#1A2A4A;color:#fff;padding:12px;border-radius:7px;font-size:0.9rem;font-weight:700;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;transition:background 0.2s;font-family:'Noto Sans Bengali',sans-serif;margin-top:10px;}
+.pd-order-btn:hover{background:#F57224;}
+.pd-desc{background:#fff;border-radius:12px;border:1px solid #EBEBEB;padding:28px;margin-top:20px;box-shadow:0 2px 10px rgba(0,0,0,0.04);}
+.pd-desc-title{font-size:1rem;font-weight:700;color:#212121;margin:0 0 16px;padding-bottom:12px;border-bottom:2px solid #F57224;display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;}
+.pd-desc pre{white-space:pre-wrap;font-family:'Noto Sans Bengali',sans-serif;color:#555;line-height:1.85;font-size:0.86rem;margin:0;}
+@media(max-width:720px){
+  .pd-main{grid-template-columns:1fr !important;}
+  .pd-title{font-size:1.1rem;}
+}
+</style>
+
+<div class="pd-wrap">
+  <!-- Breadcrumb -->
+  <div class="pd-breadcrumb">
+    <a href="/">হোম</a><span>›</span>
+    <a href="/products/category/<%= product.category %>"><%= product.category %></a><span>›</span>
+    <span style="color:#212121;font-weight:600;"><%= product.name.length > 44 ? product.name.substring(0,44)+'…' : product.name %></span>
+  </div>
+
+  <div class="pd-main">
+    <%
+      const images  = JSON.parse(product.image_name || '[]');
+      const mainImg = images.length ? images[0] : 'default.jpg';
+      const resolveImg = (n) => /^https?:\/\//.test(n) ? n : '/images/' + n;
+    %>
+
+    <!-- Gallery -->
+    <div class="pd-gallery">
+      <div class="pd-main-img">
+        <img id="mainImage" src="<%= resolveImg(mainImg) %>" alt="<%= product.name %>">
+        <button class="pd-nav-btn" id="prevBtn" style="left:10px;">‹</button>
+        <button class="pd-nav-btn" id="nextBtn" style="right:10px;">›</button>
+      </div>
+      <div class="pd-thumbs">
+        <% images.forEach((img, i) => { %>
+          <img src="<%= resolveImg(img) %>" class="pd-thumb <%= i===0?'active':'' %>"
+            data-index="<%= i %>" alt="thumb <%= i+1 %>" loading="lazy">
+        <% }) %>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="pd-info">
+      <a href="/products/category/<%= product.category %>" class="pd-cat-tag">
+        <i class="fas fa-tag"></i> <%= product.category %>
+      </a>
+
+      <h1 class="pd-title"><%= product.name %></h1>
+
+      <div class="pd-price-box">
+        <% if (product.is_discount_enabled && product.discounted_price) { %>
+          <div style="display:flex;align-items:baseline;flex-wrap:wrap;gap:4px;">
+            <span class="pd-price-sale">৳<%= new Intl.NumberFormat('bn-BD').format(product.discounted_price) %></span>
+            <span class="pd-price-orig">৳<%= new Intl.NumberFormat('bn-BD').format(product.price) %></span>
+            <span class="pd-save-badge">−<%= Math.round((product.price-product.discounted_price)/product.price*100) %>% সাশ্রয়</span>
+          </div>
+        <% } else { %>
+          <span class="pd-price-sale">৳<%= new Intl.NumberFormat('bn-BD').format(product.price) %></span>
+        <% } %>
+      </div>
+
+      <div class="pd-badges">
+        <span class="pd-badge-item pd-badge-green"><i class="fas fa-check-circle"></i>অরিজিনাল পণ্য</span>
+        <span class="pd-badge-item pd-badge-blue"><i class="fas fa-truck"></i>হোম ডেলিভারি</span>
+        <span class="pd-badge-item pd-badge-orange"><i class="fas fa-money-bill"></i>ক্যাশ অন ডেলিভারি</span>
+        <% if (product.stock > 0) { %>
+          <span class="pd-badge-item" style="background:#ECFDF5;color:#059669;border:1px solid #A7F3D0;"><i class="fas fa-box"></i>স্টকে আছে (<%= product.stock %>)</span>
+        <% } else { %>
+          <span class="pd-badge-item" style="background:#FEF2F2;color:#DC2626;border:1px solid #FCA5A5;"><i class="fas fa-times-circle"></i>স্টক শেষ</span>
+        <% } %>
+      </div>
+
+      <!-- Qty + Cart -->
+      <div class="pd-qty-row">
+        <div class="pd-qty">
+          <button class="pd-qty-btn" id="qtyMinus">−</button>
+          <input class="pd-qty-val" type="number" id="qtyInput" value="1" min="1" max="<%= product.stock || 99 %>" readonly>
+          <button class="pd-qty-btn" id="qtyPlus">+</button>
+        </div>
+        <button class="pd-add-btn add-to-cart"
+          data-id="<%= product.id %>"
+          data-name="<%= product.name %>"
+          data-price="<%= product.is_discount_enabled && product.discounted_price ? product.discounted_price : product.price %>"
+          data-image="<%= resolveImg(mainImg) %>"
+          data-quantity-input="qtyInput">
+          <i class="fas fa-cart-plus"></i> কার্টে যোগ করুন
+        </button>
+      </div>
+
+      <a href="/cart" class="pd-order-btn">
+        <i class="fas fa-bolt"></i> এখনই অর্ডার করুন
+      </a>
+
+      <!-- Share -->
+      <div style="display:flex;align-items:center;gap:10px;margin-top:16px;padding-top:16px;border-top:1px solid #F0F0F0;">
+        <span style="font-size:0.76rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;">শেয়ার করুন:</span>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent('https://lensbazaarbd.com/products/'+product.id) %>" target="_blank"
+          style="width:32px;height:32px;border-radius:50%;background:#1877F2;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.82rem;text-decoration:none;">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://wa.me/?text=<%= encodeURIComponent(product.name + ' - https://lensbazaarbd.com/products/'+product.id) %>" target="_blank"
+          style="width:32px;height:32px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.82rem;text-decoration:none;">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Description -->
+  <div class="pd-desc">
+    <h2 class="pd-desc-title"><i class="fas fa-info-circle" style="color:#F57224;"></i> পণ্যের বিবরণ</h2>
+    <pre><%= product.description %></pre>
+  </div>
+</div>
+
+<script>
+  const images = <%- JSON.stringify(JSON.parse(product.image_name || '[]')) %>;
+  let current = 0;
+  const mainImg  = document.getElementById('mainImage');
+  const thumbs   = document.querySelectorAll('.pd-thumb');
+  const qtyInput = document.getElementById('qtyInput');
+
+  function goTo(idx) {
+    current = (idx + images.length) % images.length;
+    mainImg.style.opacity = '0.6';
+    setTimeout(() => {
+      const img = images[current];
+      mainImg.src = /^https?:\/\//.test(img) ? img : '/images/' + img;
+      mainImg.style.opacity = '1';
+    }, 150);
+    thumbs.forEach((t, i) => t.classList.toggle('active', i === current));
+  }
+
+  thumbs.forEach((t, i) => t.addEventListener('click', () => goTo(i)));
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+
+  /* Keyboard nav */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  goTo(current - 1);
+    if (e.key === 'ArrowRight') goTo(current + 1);
+  });
+
+  /* Qty */
+  document.getElementById('qtyMinus').addEventListener('click', () => {
+    if (parseInt(qtyInput.value) > 1) qtyInput.value = parseInt(qtyInput.value) - 1;
+  });
+  document.getElementById('qtyPlus').addEventListener('click', () => {
+    const max = parseInt(qtyInput.max) || 99;
+    if (parseInt(qtyInput.value) < max) qtyInput.value = parseInt(qtyInput.value) + 1;
+  });
+</script>
+
+<!-- ══════════════ REVIEWS SECTION ══════════════ -->
+<style>
+.rv-section{margin-top:24px;}
+.rv-header{font-size:1rem;font-weight:700;color:#212121;margin:0 0 20px;padding-bottom:12px;border-bottom:2px solid #F57224;display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;}
+.rv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:28px;}
+.rv-card{background:#fff;border-radius:10px;border:1px solid #EBEBEB;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,0.05);transition:all 0.2s;}
+.rv-card:hover{box-shadow:0 6px 20px rgba(0,0,0,0.09);transform:translateY(-2px);}
+.rv-stars{display:flex;gap:2px;margin-bottom:10px;}
+.rv-stars i{color:#FFC107;font-size:0.82rem;}
+.rv-stars i.empty{color:#E0E0E0;}
+.rv-text{font-size:0.84rem;line-height:1.7;color:#555;margin:0 0 12px;font-family:'Noto Sans Bengali',sans-serif;}
+.rv-img{width:100%;max-height:160px;object-fit:cover;border-radius:7px;margin-bottom:12px;cursor:pointer;}
+.rv-author{display:flex;align-items:center;gap:9px;}
+.rv-avatar{width:34px;height:34px;border-radius:50%;background:#FFF3EC;color:#F57224;display:flex;align-items:center;justify-content:center;font-size:0.82rem;font-weight:700;flex-shrink:0;}
+.rv-name{font-size:0.82rem;font-weight:700;color:#212121;margin:0;font-family:'Noto Sans Bengali',sans-serif;}
+.rv-date{font-size:0.72rem;color:#9E9E9E;margin:0;}
+/* Pagination dots */
+.rv-dots{display:flex;justify-content:center;gap:7px;margin-top:16px;}
+.rv-dot{width:9px;height:9px;border-radius:50%;background:#E0E0E0;cursor:pointer;transition:background 0.15s;}
+.rv-dot.active{background:#F57224;}
+/* Review form */
+.rv-form-card{background:#fff;border-radius:12px;border:1px solid #EBEBEB;padding:24px;box-shadow:0 2px 10px rgba(0,0,0,0.05);}
+.rv-form-title{font-size:0.95rem;font-weight:700;color:#212121;margin:0 0 18px;font-family:'Noto Sans Bengali',sans-serif;}
+.rv-star-input{display:flex;gap:6px;margin-bottom:16px;}
+.rv-star-input i{font-size:1.6rem;color:#E0E0E0;cursor:pointer;transition:color 0.1s;}
+.rv-star-input i.active{color:#FFC107;}
+.rv-inp{width:100%;padding:10px 13px;border:1.5px solid #E0E0E0;border-radius:7px;font-size:0.87rem;outline:none;color:#212121;background:#FAFAFA;transition:border 0.15s;box-sizing:border-box;font-family:'Noto Sans Bengali',sans-serif;margin-bottom:12px;}
+.rv-inp:focus{border-color:#F57224;background:#fff;}
+.rv-textarea{resize:vertical;min-height:80px;}
+.rv-file-label{display:flex;align-items:center;gap:9px;padding:10px 14px;border:1.5px dashed #E0E0E0;border-radius:7px;cursor:pointer;font-size:0.84rem;color:#9E9E9E;margin-bottom:14px;transition:all 0.15s;font-family:'Noto Sans Bengali',sans-serif;}
+.rv-file-label:hover{border-color:#F57224;color:#F57224;}
+.rv-preview{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.rv-preview img{width:60px;height:60px;object-fit:cover;border-radius:6px;border:2px solid #F57224;}
+.rv-submit-btn{width:100%;padding:12px;background:#F57224;color:#fff;border:none;border-radius:7px;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:'Noto Sans Bengali',sans-serif;}
+.rv-submit-btn:hover{background:#D4601A;}
+.rv-success{background:#ECFDF5;border:1px solid #A7F3D0;color:#059669;padding:12px;border-radius:7px;font-size:0.85rem;text-align:center;font-family:'Noto Sans Bengali',sans-serif;margin-top:12px;display:none;}
+/* Image lightbox */
+.rv-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;}
+.rv-lightbox.open{display:flex;}
+.rv-lightbox img{max-width:90vw;max-height:85vh;border-radius:10px;box-shadow:0 0 40px rgba(0,0,0,0.5);}
+.rv-lightbox-close{position:absolute;top:20px;right:24px;color:#fff;font-size:1.8rem;cursor:pointer;background:rgba(0,0,0,0.4);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+/* Nav arrows */
+.rv-nav{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:16px;}
+.rv-nav-btn{background:#fff;border:1.5px solid #E0E0E0;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:0.9rem;color:#616161;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.rv-nav-btn:hover{background:#F57224;color:#fff;border-color:#F57224;}
+.rv-nav-btn:disabled{opacity:0.3;cursor:default;}
+.rv-count{font-size:0.8rem;color:#9E9E9E;}
+</style>
+
+<div class="pd-wrap rv-section" id="reviews-section">
+  <h2 class="rv-header"><i class="fas fa-star" style="color:#FFC107;"></i> গ্রাহকদের রিভিউ</h2>
+
+  <!-- Review list -->
+  <div id="rv-list-wrap">
+    <div id="rv-list" class="rv-grid"></div>
+    <div class="rv-nav">
+      <button class="rv-nav-btn" id="rv-prev" disabled>‹</button>
+      <span class="rv-count" id="rv-count"></span>
+      <button class="rv-nav-btn" id="rv-next" disabled>›</button>
+    </div>
+    <div id="rv-empty" style="display:none;text-align:center;padding:40px;color:#9E9E9E;">
+      <i class="fas fa-comment-slash" style="font-size:2rem;color:#E0E0E0;display:block;margin-bottom:10px;"></i>
+      <p style="font-family:'Noto Sans Bengali',sans-serif;font-size:0.88rem;">এখনো কোনো রিভিউ নেই। প্রথমে রিভিউ দিন!</p>
+    </div>
+  </div>
+
+  <!-- Review form -->
+  <div class="rv-form-card" style="margin-top:24px;">
+    <p class="rv-form-title">⭐ আপনার রিভিউ দিন</p>
+    <form id="reviewForm" enctype="multipart/form-data">
+      <input type="hidden" name="product_id" value="<%= product.id %>">
+
+      <!-- Star rating -->
+      <div class="rv-star-input" id="starInput">
+        <i class="far fa-star" data-val="1"></i>
+        <i class="far fa-star" data-val="2"></i>
+        <i class="far fa-star" data-val="3"></i>
+        <i class="far fa-star" data-val="4"></i>
+        <i class="far fa-star" data-val="5"></i>
+      </div>
+      <input type="hidden" name="rating" id="ratingVal" value="5">
+
+      <input class="rv-inp" type="text" name="reviewer_name" placeholder="আপনার নাম *" required>
+      <input class="rv-inp" type="tel" name="phone" placeholder="ফোন নম্বর (ঐচ্ছিক)" maxlength="15">
+      <textarea class="rv-inp rv-textarea" name="comment" placeholder="আপনার মতামত লিখুন..."></textarea>
+
+      <!-- Image upload -->
+      <label class="rv-file-label" for="reviewImg">
+        <i class="fas fa-camera" style="font-size:1rem;"></i>
+        ছবি যোগ করুন (ঐচ্ছিক)
+      </label>
+      <input type="file" id="reviewImg" name="review_image" accept="image/*" style="display:none;">
+      <div class="rv-preview" id="imgPreview"></div>
+
+      <button type="submit" class="rv-submit-btn"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>রিভিউ জমা দিন</button>
+      <div class="rv-success" id="rvSuccess"></div>
+    </form>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="rv-lightbox" id="rvLightbox">
+  <div class="rv-lightbox-close" onclick="closeLightbox()">×</div>
+  <img id="lbImg" src="" alt="review image">
+</div>
+
+<script>
+/* ── Reviews ── */
+const PRODUCT_ID  = '<%= product.id %>';
+const PER_PAGE    = 3;
+let allReviews    = [];
+let currentPage   = 0;
+
+async function loadReviews() {
+  try {
+    const r = await fetch('/reviews/' + PRODUCT_ID);
+    allReviews = await r.json();
+    renderPage(0);
+  } catch {}
+}
+
+function renderPage(page) {
+  const list  = document.getElementById('rv-list');
+  const empty = document.getElementById('rv-empty');
+  const count = document.getElementById('rv-count');
+  const prev  = document.getElementById('rv-prev');
+  const next  = document.getElementById('rv-next');
+
+  currentPage = page;
+  const total = allReviews.length;
+  const start = page * PER_PAGE;
+  const slice = allReviews.slice(start, start + PER_PAGE);
+
+  if (!total) { list.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display = 'none';
+
+  count.textContent = `${start+1}–${Math.min(start+PER_PAGE,total)} / ${total}টি রিভিউ`;
+  prev.disabled = page === 0;
+  next.disabled = start + PER_PAGE >= total;
+
+  list.innerHTML = slice.map(r => {
+    const stars = Array.from({length:5}, (_,i) =>
+      `<i class="${i < r.rating ? 'fas' : 'far'} fa-star ${i < r.rating ? '' : 'empty'}"></i>`).join('');
+    const initials = r.reviewer_name.charAt(0).toUpperCase();
+    const date = new Date(r.created_at).toLocaleDateString('bn-BD');
+    const rvImg = r.image_name ? (/^https?:\/\//.test(r.image_name) ? r.image_name : '/images/' + r.image_name) : '';
+    return `
+      <div class="rv-card">
+        <div class="rv-stars">${stars}</div>
+        ${rvImg ? `<img src="${rvImg}" class="rv-img" onclick="openLightbox('${rvImg}')" loading="lazy">` : ''}
+        ${r.comment ? `<p class="rv-text">${r.comment}</p>` : ''}
+        <div class="rv-author">
+          <div class="rv-avatar">${initials}</div>
+          <div>
+            <p class="rv-name">${r.reviewer_name}</p>
+            <p class="rv-date">${date}</p>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+document.getElementById('rv-prev').addEventListener('click', () => renderPage(currentPage - 1));
+document.getElementById('rv-next').addEventListener('click', () => renderPage(currentPage + 1));
+
+/* ── Star input ── */
+let selectedRating = 5;
+const starIcons = document.querySelectorAll('#starInput i');
+function setStars(val) {
+  selectedRating = val;
+  document.getElementById('ratingVal').value = val;
+  starIcons.forEach((s, i) => {
+    s.className = i < val ? 'fas fa-star active' : 'far fa-star';
+  });
+}
+setStars(5);
+starIcons.forEach(s => {
+  s.addEventListener('mouseover', () => starIcons.forEach((x,i) => x.className = i < parseInt(s.dataset.val) ? 'fas fa-star active' : 'far fa-star'));
+  s.addEventListener('mouseout',  () => setStars(selectedRating));
+  s.addEventListener('click',     () => setStars(parseInt(s.dataset.val)));
+});
+
+/* ── Image preview ── */
+document.getElementById('reviewImg').addEventListener('change', function() {
+  const preview = document.getElementById('imgPreview');
+  preview.innerHTML = '';
+  if (this.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => { preview.innerHTML = `<img src="${e.target.result}">`; };
+    reader.readAsDataURL(this.files[0]);
+  }
+});
+
+/* ── Form submit ── */
+document.getElementById('reviewForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const form = e.target;
+  const btn  = form.querySelector('.rv-submit-btn');
+  const succ = document.getElementById('rvSuccess');
+  const fd   = new FormData(form);
+
+  btn.disabled  = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> জমা হচ্ছে...';
+
+  try {
+    const r = await fetch('/reviews/submit', { method:'POST', body:fd });
+    const d = await r.json();
+    if (d.ok) {
+      succ.textContent = '✅ ' + d.message;
+      succ.style.display = 'block';
+      form.reset(); setStars(5);
+      document.getElementById('imgPreview').innerHTML='';
+    } else {
+      succ.textContent = '❌ ' + d.message;
+      succ.style.display = 'block';
+      succ.style.background='#FEF2F2'; succ.style.color='#DC2626'; succ.style.border='1px solid #FCA5A5';
+    }
+  } catch { succ.textContent='❌ সমস্যা হয়েছে।'; succ.style.display='block'; }
+
+  btn.disabled  = false;
+  btn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:6px;"></i>রিভিউ জমা দিন';
+  setTimeout(() => succ.style.display='none', 5000);
+});
+
+/* ── Lightbox ── */
+function openLightbox(src) {
+  document.getElementById('lbImg').src = src;
+  document.getElementById('rvLightbox').classList.add('open');
+}
+function closeLightbox() { document.getElementById('rvLightbox').classList.remove('open'); }
+document.getElementById('rvLightbox').addEventListener('click', e => { if(e.target === e.currentTarget) closeLightbox(); });
+
+loadReviews();
+</script>

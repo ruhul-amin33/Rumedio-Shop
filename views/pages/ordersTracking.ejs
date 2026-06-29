@@ -1,0 +1,145 @@
+<style>
+.ot-wrap{max-width:700px;margin:0 auto;padding:32px 16px;min-height:72vh;}
+.ot-hero{text-align:center;margin-bottom:32px;}
+.ot-hero-ico{width:68px;height:68px;background:#FFF3EC;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;border:2px solid rgba(245,114,36,0.2);}
+.ot-hero-ico i{color:#F57224;font-size:1.7rem;}
+.ot-form-card{background:#fff;border-radius:12px;padding:28px;border:1px solid #EBEBEB;box-shadow:0 4px 16px rgba(0,0,0,0.06);margin-bottom:24px;}
+.ot-inp{width:100%;padding:12px 15px 12px 42px;border:1.5px solid #E0E0E0;border-radius:8px;font-size:0.92rem;outline:none;color:#212121;background:#FAFAFA;transition:all 0.2s;box-sizing:border-box;font-family:'Noto Sans Bengali',sans-serif;letter-spacing:0.5px;}
+.ot-inp:focus{border-color:#F57224;background:#fff;box-shadow:0 0 0 3px rgba(245,114,36,0.12);}
+.ot-inp-wrap{position:relative;margin-bottom:0;}
+.ot-inp-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#BDBDBD;font-size:0.85rem;}
+.ot-btn{width:100%;padding:13px;background:#F57224;color:#fff;border:none;border-radius:8px;font-size:0.92rem;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;font-family:'Noto Sans Bengali',sans-serif;}
+.ot-btn:hover{background:#D4601A;transform:translateY(-1px);}
+/* Result */
+.ot-result{background:#fff;border-radius:12px;border:1px solid #EBEBEB;box-shadow:0 4px 16px rgba(0,0,0,0.06);overflow:hidden;}
+.ot-result-header{background:linear-gradient(135deg,#1A2A4A,#243B6A);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.ot-tracking-code{font-size:1rem;font-weight:700;color:#fff;font-family:'Inter',sans-serif;letter-spacing:0.5px;}
+/* Timeline */
+.ot-timeline{padding:20px 22px;}
+.ot-step{display:flex;gap:14px;margin-bottom:20px;position:relative;}
+.ot-step:not(:last-child)::after{content:'';position:absolute;left:17px;top:36px;width:2px;height:calc(100% - 8px);background:#E0E0E0;}
+.ot-step.done::after{background:#F57224;}
+.ot-step-ico{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;}
+.ot-step.done .ot-step-ico{background:#F57224;color:#fff;}
+.ot-step.pending .ot-step-ico{background:#F5F5F5;color:#BDBDBD;border:2px solid #E0E0E0;}
+.ot-step.current .ot-step-ico{background:#FFF3EC;color:#F57224;border:2px solid #F57224;}
+.ot-step-label{font-size:0.86rem;font-weight:600;color:#212121;margin:0 0 2px;font-family:'Noto Sans Bengali',sans-serif;}
+.ot-step-sub{font-size:0.76rem;color:#9E9E9E;margin:0;}
+/* Status badge */
+.ot-status{font-size:0.73rem;font-weight:700;padding:4px 12px;border-radius:20px;}
+</style>
+
+<div class="ot-wrap">
+  <div class="ot-hero">
+    <div class="ot-hero-ico"><i class="fas fa-shipping-fast"></i></div>
+    <h1 style="font-size:1.5rem;font-weight:700;color:#212121;margin:0 0 6px;font-family:'Inter',sans-serif;">অর্ডার ট্র্যাকিং</h1>
+    <p style="color:#9E9E9E;font-size:0.84rem;margin:0;font-family:'Noto Sans Bengali',sans-serif;">আপনার ট্র্যাকিং কোড দিয়ে অর্ডারের অবস্থান জানুন</p>
+  </div>
+
+  <!-- Form -->
+  <div class="ot-form-card">
+    <form action="/ordersTracking" method="POST">
+      <label style="display:block;font-size:0.8rem;font-weight:600;color:#616161;margin-bottom:7px;font-family:'Noto Sans Bengali',sans-serif;">
+        <i class="fas fa-qrcode" style="color:#F57224;margin-right:5px;"></i> ট্র্যাকিং কোড
+      </label>
+      <div class="ot-inp-wrap">
+        <i class="fas fa-search"></i>
+        <input class="ot-inp" type="text" name="trackingCode"
+          placeholder="LBD-00001-XYZ"
+          value="<%= typeof trackingCode !== 'undefined' ? trackingCode : '' %>"
+          required autocomplete="off" style="text-transform:uppercase;">
+      </div>
+      <p style="font-size:0.76rem;color:#9E9E9E;margin:8px 0 0;font-family:'Noto Sans Bengali',sans-serif;">
+        💡 ট্র্যাকিং কোড আপনার অর্ডার কনফার্মেশন পেজে পাওয়া যাবে। যেমন: <strong style="color:#F57224;">LBD-00001-A2B</strong>
+      </p>
+      <button type="submit" class="ot-btn"><i class="fas fa-search"></i> ট্র্যাক করুন</button>
+    </form>
+  </div>
+
+  <!-- Error -->
+  <% if (typeof error !== 'undefined' && error) { %>
+  <div style="background:#FEF2F2;border:1px solid #FCA5A5;color:#DC2626;padding:12px 16px;border-radius:8px;font-size:0.84rem;margin-bottom:16px;display:flex;align-items:center;gap:8px;font-family:'Noto Sans Bengali',sans-serif;">
+    <i class="fas fa-exclamation-circle"></i> <%= error %>
+  </div>
+  <% } %>
+
+  <!-- Result -->
+  <% if (typeof order !== 'undefined' && order && order.length > 0) {
+    const o = order[0];
+    const statusMap = {
+      pending:    { label:'অপেক্ষমাণ', bg:'#FFF8E1', color:'#F59E0B', border:'#FCD34D', step:1 },
+      processing: { label:'প্রসেসিং', bg:'#EFF6FF', color:'#2563EB', border:'#93C5FD', step:2 },
+      shipped:    { label:'শিপড', bg:'#EDE9FE', color:'#7C3AED', border:'#C4B5FD', step:3 },
+      delivered:  { label:'ডেলিভারড ✅', bg:'#ECFDF5', color:'#059669', border:'#6EE7B7', step:4 },
+      cancelled:  { label:'বাতিল ❌', bg:'#FEF2F2', color:'#DC2626', border:'#FCA5A5', step:0 },
+    };
+    const st = statusMap[o.order_status] || { label:o.order_status, bg:'#F5F5F5', color:'#616161', border:'#E0E0E0', step:1 };
+    const steps = ['অর্ডার নিশ্চিত', 'প্রসেসিং', 'শিপড', 'ডেলিভারড'];
+    const stepIcons = ['fas fa-check', 'fas fa-cog', 'fas fa-truck', 'fas fa-home'];
+  %>
+  <div class="ot-result">
+    <div class="ot-result-header">
+      <div>
+        <p style="margin:0 0 3px;color:rgba(255,255,255,0.6);font-size:0.72rem;font-family:'Noto Sans Bengali',sans-serif;">ট্র্যাকিং কোড</p>
+        <p class="ot-tracking-code"><%= o.tracking_code %></p>
+      </div>
+      <span class="ot-status" style="background:<%= st.bg %>;color:<%= st.color %>;border:1px solid <%= st.border %>;"><%= st.label %></span>
+    </div>
+
+    <!-- Timeline -->
+    <% if (o.order_status !== 'cancelled') { %>
+    <div class="ot-timeline">
+      <% steps.forEach((step, i) => {
+        const stepNum = i + 1;
+        let cls = 'pending';
+        if (st.step >= stepNum) cls = 'done';
+        if (st.step === stepNum) cls = 'current';
+      %>
+      <div class="ot-step <%= cls %>">
+        <div class="ot-step-ico"><i class="<%= stepIcons[i] %>"></i></div>
+        <div style="padding-top:6px;">
+          <p class="ot-step-label"><%= step %></p>
+          <p class="ot-step-sub"><%= cls === 'done' ? '✅ সম্পন্ন' : cls === 'current' ? '⏳ চলমান' : '⏸ অপেক্ষমাণ' %></p>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+    <% } %>
+
+    <!-- Order details -->
+    <div style="padding:0 22px 20px;">
+      <div style="background:#F9F9F9;border-radius:8px;padding:14px 16px;margin-bottom:14px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div><p style="margin:0;font-size:0.73rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;">গ্রাহক</p><p style="margin:0;font-size:0.86rem;font-weight:600;color:#212121;font-family:'Noto Sans Bengali',sans-serif;"><%= o.first_name %></p></div>
+          <div><p style="margin:0;font-size:0.73rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;">ফোন</p><p style="margin:0;font-size:0.86rem;font-weight:600;color:#212121;"><%= o.phone %></p></div>
+          <div style="grid-column:1/-1;"><p style="margin:0;font-size:0.73rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;">ঠিকানা</p><p style="margin:0;font-size:0.86rem;color:#212121;font-family:'Noto Sans Bengali',sans-serif;"><%= o.street %>, <%= o.city %>, <%= o.district %></p></div>
+          <div><p style="margin:0;font-size:0.73rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;">পেমেন্ট</p><p style="margin:0;font-size:0.84rem;font-weight:600;color:#212121;font-family:'Noto Sans Bengali',sans-serif;"><%= o.payment_method %></p></div>
+          <div><p style="margin:0;font-size:0.73rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;">ডেলিভারি এলাকা</p><p style="margin:0;font-size:0.84rem;font-weight:600;color:#212121;font-family:'Noto Sans Bengali',sans-serif;"><%= o.delivery_area === 'dhaka' ? '🏙️ ঢাকার ভেতরে' : '🗺️ ঢাকার বাইরে' %></p></div>
+        </div>
+      </div>
+
+      <!-- Items -->
+      <table style="width:100%;border-collapse:collapse;font-size:0.83rem;">
+        <thead><tr style="background:#F5F5F5;border-bottom:1px solid #E0E0E0;">
+          <th style="padding:10px 12px;text-align:left;font-weight:600;color:#9E9E9E;text-transform:uppercase;font-size:0.71rem;">পণ্য</th>
+          <th style="padding:10px 12px;text-align:center;font-weight:600;color:#9E9E9E;text-transform:uppercase;font-size:0.71rem;">পরিমাণ</th>
+          <th style="padding:10px 12px;text-align:right;font-weight:600;color:#9E9E9E;text-transform:uppercase;font-size:0.71rem;">মূল্য</th>
+        </tr></thead>
+        <tbody>
+          <% let total=0; order.forEach((item,i) => { total+=parseFloat(item.price)*item.quantity; %>
+          <tr style="border-bottom:1px solid #F5F5F5;background:<%= i%2===0?'#fff':'#FAFAFA' %>;">
+            <td style="padding:10px 12px;color:#212121;font-weight:500;font-family:'Noto Sans Bengali',sans-serif;"><%= item.product_name || '#'+item.product_id %></td>
+            <td style="padding:10px 12px;text-align:center;color:#616161;"><%= item.quantity %></td>
+            <td style="padding:10px 12px;text-align:right;color:#F57224;font-weight:600;">৳<%= parseFloat(item.price).toFixed(2) %></td>
+          </tr>
+          <% }) %>
+          <tr style="background:#FFF3EC;border-top:2px solid #F57224;">
+            <td colspan="2" style="padding:12px;font-weight:700;color:#212121;font-family:'Noto Sans Bengali',sans-serif;">সর্বমোট</td>
+            <td style="padding:12px;text-align:right;font-size:1.05rem;font-weight:800;color:#F57224;font-family:'Noto Sans Bengali',sans-serif;">৳<%= total.toFixed(2) %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <% } %>
+</div>

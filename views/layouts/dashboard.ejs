@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || 'Admin Dashboard' %> — RumeDio Shop</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body style="background:#F5F5F5; font-family:'Inter',sans-serif; margin:0; padding:0;">
+
+  <!-- Admin Header -->
+  <header style="position:fixed; top:0; left:0; width:100%; background:#1A2A4A; z-index:100; border-bottom:2px solid #F57224; box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+    <div style="max-width:1300px; margin:0 auto; padding:0 20px; display:flex; align-items:center; justify-content:space-between; height:58px;">
+      
+      <!-- Brand -->
+      <div style="display:flex; align-items:center; gap:10px;">
+        <i class="fas fa-camera-retro" style="color:#F57224; font-size:1.2rem;"></i>
+        <span style="color:white; font-size:1rem; font-weight:800; letter-spacing:0.3px;">RumeDio Shop</span>
+        <span style="background:#F57224; color:white; font-size:0.65rem; font-weight:700; padding:2px 8px; border-radius:10px; margin-left:4px;">ADMIN</span>
+      </div>
+
+      <!-- Mobile toggle -->
+      <button id="menu-btn" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:6px 10px; cursor:pointer; color:white; display:none;">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <!-- Desktop Nav -->
+      <nav id="admin-nav" style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+        <a href="/" style="padding:6px 14px; background:rgba(255,255,255,0.1); color:#CBD5E1; border-radius:6px; text-decoration:none; font-size:0.82rem; font-weight:600; transition:all 0.15s;" onmouseover="this.style.background='#F57224'; this.style.color='white'" onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.color='#CBD5E1'">
+          <i class="fas fa-home" style="margin-right:5px;"></i> হোম
+        </a>
+        <a href="/dashboard/products-add" style="padding:6px 14px; background:rgba(255,255,255,0.1); color:#CBD5E1; border-radius:6px; text-decoration:none; font-size:0.82rem; font-weight:600; transition:all 0.15s;" onmouseover="this.style.background='#F57224'; this.style.color='white'" onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.color='#CBD5E1'">
+          <i class="fas fa-plus" style="margin-right:5px;"></i> পণ্য যোগ
+        </a>
+        <a href="/dashboard/orders" style="padding:6px 14px; background:rgba(255,255,255,0.1); color:#CBD5E1; border-radius:6px; text-decoration:none; font-size:0.82rem; font-weight:600; transition:all 0.15s;" onmouseover="this.style.background='#F57224'; this.style.color='white'" onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.color='#CBD5E1'">
+          <i class="fas fa-list-alt" style="margin-right:5px;"></i> অর্ডার
+        </a>
+        <a href="/dashboard/products-manage" style="padding:6px 14px; background:rgba(255,255,255,0.1); color:#CBD5E1; border-radius:6px; text-decoration:none; font-size:0.82rem; font-weight:600; transition:all 0.15s;" onmouseover="this.style.background='#F57224'; this.style.color='white'" onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.color='#CBD5E1'">
+          <i class="fas fa-cog" style="margin-right:5px;"></i> পণ্য ম্যানেজ
+        </a>
+        <a href="/download-excel" style="padding:6px 14px; background:#00A650; color:white; border-radius:6px; text-decoration:none; font-size:0.82rem; font-weight:600; transition:all 0.15s;" onmouseover="this.style.background='#007A3D'" onmouseout="this.style.background='#00A650'">
+          <i class="fas fa-file-excel" style="margin-right:5px;"></i> Excel
+        </a>
+        <a href="/dashboard/reviews" style="padding:6px 14px; background:rgba(255,255,255,0.1); color:#CBD5E1; border-radius:6px; text-decoration:none; font-size:0.82rem; font-weight:600; transition:all 0.15s;" onmouseover="this.style.background='#F57224'; this.style.color='white'" onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.color='#CBD5E1'"><i class="fas fa-star" style="margin-right:5px;"></i> Reviews</a>
+        <a href="/subscribers" style="padding:6px 14px; background:rgba(255,255,255,0.1); color:#CBD5E1; border-radius:6px; text-decoration:none; font-size:0.82rem; font-weight:600; transition:all 0.15s;" onmouseover="this.style.background='#F57224'; this.style.color='white'" onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.color='#CBD5E1'">
+          <i class="fas fa-users" style="margin-right:5px;"></i> Subscribers
+        </a>
+      </nav>
+    </div>
+    <!-- Mobile Nav -->
+    <div id="mobile-menu" style="display:none; padding:12px 16px; border-top:1px solid rgba(255,255,255,0.1); background:#111B30;">
+      <div style="display:flex; flex-wrap:wrap; gap:8px;">
+        <a href="/" style="padding:7px 14px; background:#F57224; color:white; border-radius:6px; text-decoration:none; font-size:0.82rem; font-weight:600;">🏠 হোম</a>
+        <a href="/dashboard/products-add" style="padding:7px 14px; background:rgba(255,255,255,0.1); color:#CBD5E1; border-radius:6px; text-decoration:none; font-size:0.82rem; font-weight:600;">+ পণ্য যোগ</a>
+        <a href="/dashboard/orders" style="padding:7px 14px; background:rgba(255,255,255,0.1); color:#CBD5E1; border-radius:6px; text-decoration:none; font-size:0.82rem; font-weight:600;">অর্ডার</a>
+        <a href="/dashboard/products-manage" style="padding:7px 14px; background:rgba(255,255,255,0.1); color:#CBD5E1; border-radius:6px; text-decoration:none; font-size:0.82rem; font-weight:600;">পণ্য ম্যানেজ</a>
+        <a href="/download-excel" style="padding:7px 14px; background:#00A650; color:white; border-radius:6px; text-decoration:none; font-size:0.82rem; font-weight:600;">Excel</a>
+        <a href="/dashboard/reviews" style="padding:6px 14px; background:rgba(255,255,255,0.1); color:#CBD5E1; border-radius:6px; text-decoration:none; font-size:0.82rem; font-weight:600; transition:all 0.15s;" onmouseover="this.style.background='#F57224'; this.style.color='white'" onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.color='#CBD5E1'"><i class="fas fa-star" style="margin-right:5px;"></i> Reviews</a>
+        <a href="/subscribers" style="padding:7px 14px; background:rgba(255,255,255,0.1); color:#CBD5E1; border-radius:6px; text-decoration:none; font-size:0.82rem; font-weight:600;">Subscribers</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main style="margin-top:58px; padding:24px 16px; max-width:1300px; margin-left:auto; margin-right:auto;">
+    <%- body %>
+  </main>
+
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.style.display = mobileMenu.style.display === 'none' ? 'block' : 'none';
+      });
+    }
+    const style = document.createElement('style');
+    style.textContent = '@media(max-width:900px){#admin-nav{display:none !important;} #menu-btn{display:block !important;}}';
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

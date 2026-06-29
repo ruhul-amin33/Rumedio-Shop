@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9BED01XFWZ"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-9BED01XFWZ');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="description" content="RumeDio Shop - বাংলাদেশের সেরা অনলাইন শপ, ভালো মানের পণ্য সারাদেশে হোম ডেলিভারি">
+  <title>RumeDio Shop</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.png">
+  <style>
+    /* ── RESET ── */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:#F5F5F5;font-family:'Inter','Noto Sans Bengali',sans-serif;}
+    a{text-decoration:none;color:inherit;}
+
+    /* ── TOP BAR ── */
+    .topbar{background:#1A2A4A;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.08);}
+    .topbar-inner{max-width:1200px;margin:0 auto;padding:0 16px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}
+    .topbar a,.topbar span{color:#94A3B8;font-size:0.78rem;display:flex;align-items:center;gap:5px;transition:color 0.15s;}
+    .topbar a:hover{color:#F57224;}
+    .topbar-sep{width:1px;height:12px;background:rgba(255,255,255,0.15);}
+
+    /* ── HEADER ── */
+    .site-header{background:#fff;border-bottom:2.5px solid #F57224;box-shadow:0 2px 10px rgba(0,0,0,0.08);}
+    .header-inner{max-width:1200px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px;}
+
+    /* Logo */
+    .logo{display:flex;align-items:center;gap:9px;flex-shrink:0;}
+    .logo img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:1px solid #E2C4A8;}
+    .logo-text{font-size:0.95rem;font-weight:800;color:#1A2A4A;white-space:nowrap;letter-spacing:0.2px;}
+
+    /* Search */
+    .search-box{flex:1;max-width:500px;position:relative;margin:0 12px;}
+    .search-row{display:flex;}
+    .search-input{flex:1;padding:9px 14px;border:2px solid #F57224;border-right:none;border-radius:4px 0 0 4px;font-size:0.86rem;outline:none;color:#212121;background:#fff;font-family:'Noto Sans Bengali',sans-serif;transition:box-shadow 0.2s;}
+    .search-input:focus{box-shadow:0 0 0 3px rgba(245,114,36,0.15);}
+    .search-btn{background:#F57224;color:#fff;border:none;padding:9px 16px;border-radius:0 4px 4px 0;cursor:pointer;font-size:0.9rem;transition:background 0.2s;flex-shrink:0;}
+    .search-btn:hover{background:#D4601A;}
+    #search-dropdown{display:none;position:absolute;top:calc(100% + 2px);left:0;right:0;background:#fff;border:1.5px solid #E0E0E0;border-top:2px solid #F57224;border-radius:0 0 8px 8px;box-shadow:0 8px 28px rgba(0,0,0,0.12);z-index:9999;max-height:380px;overflow-y:auto;}
+
+    /* Header right */
+    .header-right{display:flex;align-items:center;gap:14px;margin-left:auto;flex-shrink:0;}
+    .cart-btn{position:relative;color:#212121;transition:color 0.15s;}
+    .cart-btn:hover{color:#F57224;}
+    .cart-btn i{font-size:1.35rem;}
+    #cart-count{position:absolute;top:-7px;right:-8px;background:#F57224;color:#fff;font-size:0.6rem;font-weight:800;border-radius:50%;width:17px;height:17px;display:flex;align-items:center;justify-content:center;line-height:1;}
+
+    /* Hamburger */
+    .hamburger{display:none;background:none;border:none;cursor:pointer;padding:4px;color:#1A2A4A;}
+    .hamburger i{font-size:1.25rem;}
+
+    /* Desktop nav */
+    .desktop-nav{display:flex;align-items:center;gap:4px;}
+    .desktop-nav a,.desktop-nav button{padding:6px 11px;font-size:0.84rem;font-weight:600;color:#212121;border-radius:4px;transition:all 0.15s;white-space:nowrap;border:none;background:none;cursor:pointer;}
+    .desktop-nav a:hover,.desktop-nav button:hover{color:#F57224;background:#FFF3EC;}
+    .nav-logout{color:#E8192C !important;border:1px solid #E8192C !important;}
+    .nav-logout:hover{background:#E8192C !important;color:#fff !important;}
+
+    /* Mobile menu */
+    .mobile-menu{display:none;border-top:1px solid #F0F0F0;background:#fff;}
+    .mobile-menu a{display:flex;align-items:center;gap:10px;padding:13px 20px;font-size:0.88rem;font-weight:600;color:#212121;border-bottom:1px solid #F5F5F5;transition:all 0.15s;}
+    .mobile-menu a:hover{background:#FFF3EC;color:#F57224;}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1023px){
+      .desktop-nav{display:none;}
+      .hamburger{display:block;}
+      .search-box{display:none;}          /* hidden in header row */
+    }
+    @media(max-width:480px){
+      .logo-text{font-size:0.82rem;}
+      .topbar-inner{gap:8px;}
+    }
+
+    /* ── STICKY ── */
+    .sticky-header{position:sticky;top:0;z-index:100;}
+
+    /* ── BACK TO TOP ── */
+    #back-to-top{display:none;position:fixed;bottom:24px;right:18px;width:44px;height:44px;background:#F57224;color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:1rem;box-shadow:0 4px 14px rgba(245,114,36,0.4);z-index:1000;transition:all 0.2s;align-items:center;justify-content:center;}
+    #back-to-top:hover{background:#D4601A;transform:translateY(-2px);}
+    #back-to-top.visible{display:flex;}
+
+    /* ── WHATSAPP FLOAT ── */
+    .wa-float{position:fixed;bottom:78px;right:18px;width:46px;height:46px;background:#25D366;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 14px rgba(37,211,102,0.45);z-index:999;transition:all 0.2s;text-decoration:none;}
+    .wa-float:hover{transform:scale(1.1);box-shadow:0 6px 18px rgba(37,211,102,0.55);}
+
+    /* ── TOAST ── */
+    #toast{position:fixed;bottom:200px;right:18px;background:#1A2A4A;color:#fff;padding:11px 18px;border-radius:8px;font-size:0.84rem;font-family:'Noto Sans Bengali',sans-serif;z-index:9999;transform:translateY(20px);opacity:0;transition:all 0.3s;pointer-events:none;border-left:3px solid #F57224;max-width:240px;}
+    #toast.show{transform:translateY(0);opacity:1;}
+
+    /* ── FOOTER ── */
+    .site-footer{background:#1A2A4A;color:#94A3B8;padding:48px 0 0;border-top:3px solid #F57224;}
+    .footer-inner{max-width:1200px;margin:0 auto;padding:0 24px;}
+    .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:36px;padding-bottom:40px;}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding:16px 0;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;font-size:0.76rem;color:#475569;}
+    .footer-social{display:flex;gap:9px;margin-top:14px;}
+    .social-ico{width:40px;height:40px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:1rem;transition:all 0.22s;text-decoration:none;flex-shrink:0;}
+    .footer-heading{color:#fff;font-size:0.88rem;font-weight:700;margin-bottom:14px;}
+    .footer-link{color:#64748B;font-size:0.82rem;display:flex;align-items:center;gap:7px;padding:3px 0;transition:color 0.15s;}
+    .footer-link:hover{color:#F57224;}
+  </style>
+</head>
+<body>
+
+  <!-- STICKY HEADER WRAPPER -->
+  <div class="sticky-header">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="topbar-inner">
+        <a href="tel:+8801641922591"><i class="fas fa-phone-alt" style="color:#F57224;"></i> কল: +8801641922591</a>
+        <div class="topbar-sep"></div>
+        <a href="https://wa.me/8801641922591" target="_blank"><i class="fab fa-whatsapp" style="color:#25D366;"></i> WhatsApp</a>
+        <div class="topbar-sep"></div>
+        <span><i class="fas fa-truck" style="color:#F57224;"></i> সারা বাংলাদেশে ডেলিভারি</span>
+      </div>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header class="site-header">
+      <div class="header-inner">
+
+        <!-- LOGO -->
+        <a href="/" class="logo">
+          <img src="/images/web-logo.png" alt="RumeDio Shop" onerror="this.style.display='none'">
+          <span class="logo-text">RumeDio Shop</span>
+        </a>
+
+        <!-- SEARCH (desktop — hidden on mobile via CSS, shown below header) -->
+        <div class="search-box" id="desktop-search">
+          <div class="search-row">
+            <input type="text" class="search-input site-search-input" placeholder="পণ্য খুঁজুন..." autocomplete="off" id="desktop-q">
+            <button class="search-btn" onclick="doSearchNav('desktop-q')"><i class="fas fa-search"></i></button>
+          </div>
+          <div id="search-dropdown"></div>
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="header-right">
+          <!-- Cart -->
+          <a href="/cart" class="cart-btn">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="cart-count">0</span>
+          </a>
+
+          <!-- Desktop nav -->
+          <nav class="desktop-nav">
+            <a href="/">হোম</a>
+            <a href="/products/category/all">সব পণ্য</a>
+            <a href="/contact">যোগাযোগ</a>
+            <a href="/orders-tracking">অর্ডার ট্র্যাকিং</a>
+            <% if (typeof phone !== 'undefined' && phone && phone !== '') { %>
+              <form action="/auth/logout" method="POST" style="display:inline;">
+                <button type="submit" class="nav-logout">লগ আউট</button>
+              </form>
+            <% } %>
+          </nav>
+
+          <!-- Hamburger -->
+          <button class="hamburger" id="menu-btn" aria-label="Menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- MOBILE SEARCH BAR (shown only on mobile) -->
+      <div id="mobile-search-bar" style="padding:0 12px 10px; display:none;">
+        <div style="position:relative;">
+          <div style="display:flex;">
+            <input type="text" class="search-input site-search-input" id="mobile-q" placeholder="পণ্য খুঁজুন..." autocomplete="off" style="border-radius:4px 0 0 4px;">
+            <button class="search-btn" onclick="doSearchNav('mobile-q')" style="border-radius:0 4px 4px 0;"><i class="fas fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOBILE MENU -->
+      <nav class="mobile-menu" id="mobile-menu">
+        <a href="/"><i class="fas fa-home" style="color:#F57224;width:18px;"></i> হোম</a>
+        <a href="/products/category/all"><i class="fas fa-store" style="color:#F57224;width:18px;"></i> সব পণ্য</a>
+        <a href="/contact"><i class="fas fa-phone-alt" style="color:#F57224;width:18px;"></i> যোগাযোগ</a>
+        <a href="/orders-tracking"><i class="fas fa-truck" style="color:#F57224;width:18px;"></i> অর্ডার ট্র্যাকিং</a>
+        <a href="/cart"><i class="fas fa-shopping-cart" style="color:#F57224;width:18px;"></i> কার্ট</a>
+        <% if (typeof phone !== 'undefined' && phone && phone !== '') { %>
+          <form action="/auth/logout" method="POST">
+            <button type="submit" style="width:100%;text-align:left;padding:13px 20px;font-size:0.88rem;font-weight:600;color:#E8192C;background:none;border:none;border-bottom:1px solid #F5F5F5;cursor:pointer;display:flex;align-items:center;gap:10px;font-family:'Noto Sans Bengali',sans-serif;">
+              <i class="fas fa-sign-out-alt" style="width:18px;"></i> লগ আউট
+            </button>
+          </form>
+        <% } %>
+      </nav>
+    </header>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main><%- body %></main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+
+        <!-- Brand -->
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+            <i class="fas fa-camera-retro" style="color:#F57224;font-size:1.3rem;"></i>
+            <span style="color:#fff;font-size:1.05rem;font-weight:800;">RumeDio Shop</span>
+          </div>
+          <p style="font-size:0.8rem;line-height:1.7;color:#64748B;font-family:'Noto Sans Bengali',sans-serif;">বাংলাদেশের সেরা মোবাইল ক্যামেরা লেন্স শপ। প্রিমিয়াম মানের পণ্য সাশ্রয়ী মূল্যে।</p>
+          <div class="footer-social">
+            <a class="social-ico fb-ico" target="_blank" href="https://www.facebook.com/share/17XRsmH8XJ/" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a class="social-ico ig-ico" target="_blank" href="https://www.instagram.com/lens_bazaar_bd?igsh=MXM3Znhka3JtdW5vbA==" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a class="social-ico yt-ico" target="_blank" href="https://youtube.com/@lensbazaarbd" title="YouTube"><i class="fab fa-youtube"></i></a>
+            <a class="social-ico tt-ico" target="_blank" href="https://www.tiktok.com/@lensbazaarbd" title="TikTok"><i class="fab fa-tiktok"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <p class="footer-heading">দ্রুত লিঙ্ক</p>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <a href="/" class="footer-link"><i class="fas fa-home" style="color:#F57224;width:14px;"></i>হোম</a>
+            <a href="/products/category/all" class="footer-link"><i class="fas fa-store" style="color:#F57224;width:14px;"></i>সব পণ্য</a>
+            <a href="/contact" class="footer-link"><i class="fas fa-envelope" style="color:#F57224;width:14px;"></i>যোগাযোগ</a>
+            <a href="/orders-tracking" class="footer-link"><i class="fas fa-search" style="color:#F57224;width:14px;"></i>অর্ডার ট্র্যাকিং</a>
+            <a href="/cart" class="footer-link"><i class="fas fa-shopping-cart" style="color:#F57224;width:14px;"></i>কার্ট</a>
+          </div>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <p class="footer-heading">যোগাযোগ</p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="tel:+8801641922591" class="footer-link"><i class="fas fa-phone-alt" style="color:#F57224;width:14px;"></i>+8801641922591</a>
+            <span class="footer-link" style="cursor:default;"><i class="fas fa-envelope" style="color:#F57224;width:14px;"></i>imranmolla3102003@gmail.com</span>
+            <a href="https://wa.me/8801641922591" class="footer-link" target="_blank"><i class="fab fa-whatsapp" style="color:#25D366;width:14px;"></i>WhatsApp করুন</a>
+          </div>
+        </div>
+
+        <!-- Trust -->
+        <div>
+          <p class="footer-heading">আমাদের গ্যারান্টি</p>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <i class="fas fa-truck" style="color:#F57224;margin-top:2px;"></i>
+              <div><p style="margin:0;color:#fff;font-size:0.8rem;font-weight:600;">দ্রুত ডেলিভারি</p><p style="margin:0;color:#64748B;font-size:0.74rem;">সারা বাংলাদেশে</p></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <i class="fas fa-shield-alt" style="color:#F57224;margin-top:2px;"></i>
+              <div><p style="margin:0;color:#fff;font-size:0.8rem;font-weight:600;">১০০% অরিজিনাল</p><p style="margin:0;color:#64748B;font-size:0.74rem;">গ্যারান্টিযুক্ত পণ্য</p></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <i class="fas fa-headset" style="color:#F57224;margin-top:2px;"></i>
+              <div><p style="margin:0;color:#fff;font-size:0.8rem;font-weight:600;">২৪/৭ সাপোর্ট</p><p style="margin:0;color:#64748B;font-size:0.74rem;">সর্বদা আপনার পাশে</p></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="footer-bottom">
+        <span>Copyright © <script>document.write(new Date().getFullYear())</script> RumeDio Shop. সর্বস্বত্ব সংরক্ষিত।</span>
+        <span>💳 ক্যাশ অন ডেলিভারি · 🚚 হোম ডেলিভারি</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING CART BUTTON -->
+  <div id="floating-cart-btn" style="display:none;position:fixed;bottom:136px;right:18px;z-index:996;">
+    <a href="/cart" id="floating-cart-link"
+      style="display:flex;align-items:center;gap:9px;background:#1A2A4A;color:#fff;padding:9px 16px 9px 12px;border-radius:28px;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,0.22);font-size:0.81rem;font-weight:700;transition:all 0.2s;font-family:'Noto Sans Bengali',sans-serif;white-space:nowrap;max-width:220px;"
+      onmouseover="this.style.background='#F57224';this.style.boxShadow='0 6px 20px rgba(245,114,36,0.38)'"
+      onmouseout="this.style.background='#1A2A4A';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.22)'">
+      <span style="position:relative;flex-shrink:0;">
+        <i class="fas fa-shopping-cart" style="font-size:0.95rem;"></i>
+        <span id="fc-badge" style="position:absolute;top:-7px;right:-9px;background:#F57224;color:#fff;font-size:0.56rem;font-weight:800;border-radius:50%;width:15px;height:15px;display:flex;align-items:center;justify-content:center;border:1.5px solid #1A2A4A;line-height:1;">0</span>
+      </span>
+      <span id="fc-label" style="overflow:hidden;text-overflow:ellipsis;">কার্ট</span>
+    </a>
+  </div>
+
+  <!-- WHATSAPP FLOAT -->
+  <a href="https://wa.me/8801641922591" target="_blank" class="wa-float" title="WhatsApp এ মেসেজ করুন">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <!-- BACK TO TOP -->
+  <button id="back-to-top" title="উপরে যান"><i class="fas fa-chevron-up"></i></button>
+
+  <!-- TOAST -->
+  <div id="toast"></div>
+
+  <script src="/js/main.js"></script>
+  <script>
+  /* ── Active nav highlight ── */
+  (function(){
+    const path = window.location.pathname;
+    document.querySelectorAll('.desktop-nav a, .mobile-menu a').forEach(link => {
+      const href = link.getAttribute('href');
+      if (!href) return;
+      const isActive = (href === '/' && path === '/') ||
+                       (href !== '/' && path.startsWith(href));
+      if (isActive) {
+        link.style.color = '#F57224';
+        link.style.background = '#FFF3EC';
+        link.style.borderRadius = '4px';
+      }
+    });
+  })();
+  </script>
+  <script>
+  (function(){
+    /* ── Responsive: show mobile search bar & hamburger ── */
+    function applyResponsive(){
+      const isMobile = window.innerWidth < 1024;
+      const desktopSearch = document.getElementById('desktop-search');
+      const mobileBar    = document.getElementById('mobile-search-bar');
+      if(desktopSearch) desktopSearch.style.display = isMobile ? 'none' : 'block';
+      if(mobileBar)     mobileBar.style.display     = isMobile ? 'block' : 'none';
+    }
+    applyResponsive();
+    window.addEventListener('resize', applyResponsive);
+
+    /* ── Hamburger ── */
+    const menuBtn    = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if(menuBtn && mobileMenu){
+      menuBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        const open = mobileMenu.style.display === 'block';
+        mobileMenu.style.display = open ? 'none' : 'block';
+        menuBtn.querySelector('i').className = open ? 'fas fa-bars' : 'fas fa-times';
+      });
+      document.addEventListener('click', e => {
+        if(!e.target.closest('#menu-btn') && !e.target.closest('#mobile-menu')){
+          mobileMenu.style.display = 'none';
+          menuBtn.querySelector('i').className = 'fas fa-bars';
+        }
+      });
+    }
+
+    /* ── Search nav helper ── */
+    window.doSearchNav = function(inputId){
+      const q = document.getElementById(inputId)?.value?.trim();
+      if(q) window.location.href = '/search?q=' + encodeURIComponent(q);
+    };
+
+    /* ── Enter key on search inputs ── */
+    document.querySelectorAll('.site-search-input').forEach(inp => {
+      inp.addEventListener('keydown', e => {
+        if(e.key === 'Enter'){
+          e.preventDefault();
+          const q = inp.value.trim();
+          if(q) window.location.href = '/search?q=' + encodeURIComponent(q);
+        }
+      });
+    });
+
+    /* ── Back to Top ── */
+    const btt = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+      btt && btt.classList.toggle('visible', window.scrollY > 300);
+    });
+    btt && btt.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+
+    /* ── Toast helper ── */
+    window.showToast = function(msg, duration){
+      const t = document.getElementById('toast');
+      if(!t) return;
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), duration || 2500);
+    };
+
+    /* ── Floating Cart (bottom-right) ── */
+    function updateFloatingCart(){
+      try{
+        /* Hide on cart/checkout/thank-you pages */
+        const path = window.location.pathname;
+        const hidePaths = ['/cart', '/checkout', '/thank-you'];
+        const shouldHide = hidePaths.some(p => path === p || path.startsWith(p));
+
+        const s     = JSON.parse(localStorage.getItem('cartSummary')) || {};
+        const qty   = parseInt(s.totalQuantity) || 0;
+        const price = parseFloat(s.totalPrice)  || 0;
+        const btn   = document.getElementById('floating-cart-btn');
+        const badge = document.getElementById('fc-badge');
+        const label = document.getElementById('fc-label');
+        if(!btn) return;
+
+        if(qty > 0 && !shouldHide){
+          btn.style.display = 'block';
+          if(badge) badge.textContent = qty > 9 ? '9+' : qty;
+          if(label) label.textContent = qty + ' পণ্য — ৳' + new Intl.NumberFormat('bn-BD').format(price);
+        } else {
+          btn.style.display = 'none';
+        }
+      } catch{}
+    }
+    updateFloatingCart();
+    window.addEventListener('storage', updateFloatingCart);
+    window.addEventListener('popstate', updateFloatingCart);
+    setInterval(updateFloatingCart, 1000);
+  })();
+  </script>
+</body>
+</html>

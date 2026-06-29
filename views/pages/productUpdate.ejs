@@ -1,0 +1,136 @@
+<div style="max-width:860px;margin:0 auto;padding:8px 0;">
+<div style="background:#fff;border-radius:12px;border:1px solid #EBEBEB;box-shadow:0 4px 16px rgba(0,0,0,0.07);overflow:hidden;">
+  <div style="background:linear-gradient(135deg,#1A2A4A,#243B6A);padding:20px 28px;color:#fff;display:flex;align-items:center;justify-content:space-between;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <i class="fas fa-edit" style="color:#F57224;"></i>
+      <h2 style="margin:0;font-size:1.05rem;font-weight:700;font-family:'Inter',sans-serif;">পণ্য এডিট — #<%= product.id %></h2>
+    </div>
+    <a href="/dashboard/products-manage" style="background:rgba(255,255,255,0.12);color:#fff;padding:6px 14px;border-radius:5px;text-decoration:none;font-size:0.8rem;font-weight:600;border:1px solid rgba(255,255,255,0.2);">← ফিরে যান</a>
+  </div>
+  <div style="padding:28px;">
+  <form action="/dashboard/products-edit/<%= product.id %>" method="POST" enctype="multipart/form-data">
+  <style>
+  .pu-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .pu-full{grid-column:1/-1;}
+  .pu-label{display:block;font-size:0.79rem;font-weight:600;color:#616161;margin-bottom:6px;}
+  .pu-inp{width:100%;padding:10px 13px;border:1.5px solid #E0E0E0;border-radius:7px;font-size:0.87rem;outline:none;color:#212121;background:#FAFAFA;transition:border 0.15s;box-sizing:border-box;font-family:'Noto Sans Bengali',sans-serif;}
+  .pu-inp:focus{border-color:#F57224;background:#fff;}
+  @media(max-width:580px){.pu-grid{grid-template-columns:1fr;}}
+  </style>
+  <%
+    let existingImages=[];
+    try{existingImages=JSON.parse(product.image_name||'[]');}catch{}
+    const cats=['Telephoto Lens','Wide Angle Lens','Macro Lens','Fisheye Lens','Lens','Camera','Action Camera','Tripod','Phone Clip','Camera Bag','Memory Card','ND Filter','Accessories','Ring Light','LED Panel','Lighting','Other'];
+    const knownCat = cats.includes(product.category);
+  %>
+
+    <div class="pu-grid">
+      <div>
+        <label class="pu-label">পণ্যের নাম *</label>
+        <input class="pu-inp" type="text" name="name" value="<%= product.name %>" required>
+      </div>
+      <div>
+        <label class="pu-label">মূল মূল্য (৳) *</label>
+        <input class="pu-inp" type="number" step="0.01" name="regular_price" value="<%= product.price %>" required min="0">
+      </div>
+
+      <div>
+        <label class="pu-label">ক্যাটাগরি *</label>
+        <select class="pu-inp" name="category" id="categorySelect" required onchange="toggleCustomCat(this.value)">
+          <optgroup label="📷 ক্যামেরা & লেন্স">
+            <option value="Telephoto Lens" <%=product.category==='Telephoto Lens'?'selected':''%>>টেলিফটো লেন্স</option>
+            <option value="Wide Angle Lens" <%=product.category==='Wide Angle Lens'?'selected':''%>>ওয়াইড অ্যাঙ্গেল লেন্স</option>
+            <option value="Macro Lens" <%=product.category==='Macro Lens'?'selected':''%>>ম্যাক্রো লেন্স</option>
+            <option value="Fisheye Lens" <%=product.category==='Fisheye Lens'?'selected':''%>>ফিশআই লেন্স</option>
+            <option value="Lens" <%=product.category==='Lens'?'selected':''%>>লেন্স (সাধারণ)</option>
+            <option value="Camera" <%=product.category==='Camera'?'selected':''%>>ক্যামেরা</option>
+            <option value="Action Camera" <%=product.category==='Action Camera'?'selected':''%>>অ্যাকশন ক্যামেরা</option>
+          </optgroup>
+          <optgroup label="🔧 এক্সেসরিজ">
+            <option value="Tripod" <%=product.category==='Tripod'?'selected':''%>>ট্রাইপড</option>
+            <option value="Phone Clip" <%=product.category==='Phone Clip'?'selected':''%>>ফোন ক্লিপ</option>
+            <option value="Camera Bag" <%=product.category==='Camera Bag'?'selected':''%>>ক্যামেরা ব্যাগ</option>
+            <option value="Memory Card" <%=product.category==='Memory Card'?'selected':''%>>মেমোরি কার্ড</option>
+            <option value="Accessories" <%=product.category==='Accessories'?'selected':''%>>অ্যাকসেসরিজ</option>
+          </optgroup>
+          <option value="Other" <%=product.category==='Other'?'selected':''%>>🔹 অন্যান্য</option>
+          <option value="custom" <%=!knownCat&&product.category?'selected':''%>>✏️ কাস্টম</option>
+        </select>
+      </div>
+      <div id="customCatWrap" style="display:<%= !knownCat && product.category ? 'block':'none' %>;">
+        <label class="pu-label">কাস্টম ক্যাটাগরি</label>
+        <input class="pu-inp" type="text" name="custom_category" id="customCatInput" value="<%= !knownCat ? product.category : '' %>" placeholder="নিজের ক্যাটাগরি লিখুন">
+      </div>
+
+      <div>
+        <label class="pu-label">ডিসকাউন্ট</label>
+        <select class="pu-inp" name="is_discount_enabled" onchange="toggleDiscount(this.value)">
+          <option value="0" <%=!product.is_discount_enabled?'selected':''%>>ডিসকাউন্ট নেই</option>
+          <option value="1" <%=product.is_discount_enabled?'selected':''%>>ডিসকাউন্ট আছে</option>
+        </select>
+      </div>
+      <div id="discountWrap" style="display:<%= product.is_discount_enabled ? 'block':'none' %>;">
+        <label class="pu-label">ডিসকাউন্ট মূল্য (৳)</label>
+        <input class="pu-inp" type="number" step="0.01" name="discounted_price" id="discountPrice" value="<%= product.discounted_price || '' %>" placeholder="0.00">
+      </div>
+
+      <div>
+        <label class="pu-label">স্টক *</label>
+        <input class="pu-inp" type="number" name="stock" value="<%= product.stock %>" required min="0">
+      </div>
+
+      <div class="pu-full">
+        <label class="pu-label">বিবরণ *</label>
+        <textarea class="pu-inp" name="description" rows="6" required style="resize:vertical;"><%= product.description %></textarea>
+      </div>
+
+      <div class="pu-full">
+        <label class="pu-label">বর্তমান ছবিসমূহ</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;" id="existingImgs">
+          <% existingImages.forEach(img => { %>
+            <div style="position:relative;">
+              <img src="<%= /^https?:\/\//.test(img) ? img : '/images/' + img %>" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:2px solid #F57224;">
+            </div>
+          <% }) %>
+        </div>
+        <label class="pu-label">নতুন ছবি (পুরনো ছবি বদলাবে)</label>
+        <label for="imageInput" style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:2px dashed #E0E0E0;border-radius:8px;cursor:pointer;transition:all 0.15s;font-size:0.84rem;color:#9E9E9E;" onmouseover="this.style.borderColor='#F57224';this.style.color='#F57224'" onmouseout="this.style.borderColor='#E0E0E0';this.style.color='#9E9E9E'">
+          <i class="fas fa-cloud-upload-alt" style="font-size:1.3rem;"></i>
+          <span>নতুন ছবি আপলোড করুন (optional)</span>
+        </label>
+        <input type="file" id="imageInput" name="images" accept="image/*" multiple style="display:none;" onchange="previewImages(this)">
+        <div id="previewContainer" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"></div>
+      </div>
+
+      <div class="pu-full" style="display:flex;gap:10px;">
+        <button type="submit" style="flex:1;background:#F57224;color:#fff;border:none;padding:13px;border-radius:7px;font-size:0.92rem;font-weight:700;cursor:pointer;transition:background 0.15s;display:flex;align-items:center;justify-content:center;gap:8px;" onmouseover="this.style.background='#D4601A'" onmouseout="this.style.background='#F57224'">
+          <i class="fas fa-save"></i> পরিবর্তন সেভ করুন
+        </button>
+        <a href="/dashboard/products-manage" style="background:#F5F5F5;color:#616161;border:1.5px solid #E0E0E0;padding:13px 22px;border-radius:7px;font-size:0.88rem;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:6px;" onmouseover="this.style.background='#E0E0E0'" onmouseout="this.style.background='#F5F5F5'">বাতিল</a>
+      </div>
+    </div>
+  </form>
+  </div>
+</div>
+</div>
+
+<script>
+function toggleCustomCat(v){
+  const w=document.getElementById('customCatWrap');
+  const i=document.getElementById('customCatInput');
+  w.style.display=v==='custom'?'block':'none'; i.required=v==='custom';
+}
+function toggleDiscount(v){
+  document.getElementById('discountWrap').style.display=v==='1'?'block':'none';
+  document.getElementById('discountPrice').required=v==='1';
+}
+function previewImages(input){
+  const c=document.getElementById('previewContainer');
+  c.innerHTML='';
+  Array.from(input.files).forEach(f=>{
+    const r=new FileReader();
+    r.onload=e=>{c.innerHTML+=`<img src="${e.target.result}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:2px solid #F57224;">`};
+    r.readAsDataURL(f);
+  });
+}
+</script>

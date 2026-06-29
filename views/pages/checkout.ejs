@@ -1,0 +1,100 @@
+<div style="max-width:680px; margin:0 auto; padding:24px 16px;">
+  
+  <!-- Breadcrumb -->
+  <div style="display:flex; align-items:center; gap:6px; font-size:0.78rem; color:#9E9E9E; margin-bottom:20px; font-family:'Noto Sans Bengali',sans-serif;">
+    <a href="/" style="color:#616161; text-decoration:none;" onmouseover="this.style.color='#F57224'" onmouseout="this.style.color='#616161'">হোম</a>
+    <span>›</span>
+    <a href="/cart" style="color:#616161; text-decoration:none;" onmouseover="this.style.color='#F57224'" onmouseout="this.style.color='#616161'">কার্ট</a>
+    <span>›</span>
+    <span style="color:#212121; font-weight:600;">চেকআউট</span>
+  </div>
+
+  <div style="background:white; border-radius:10px; border:1px solid #E0E0E0; box-shadow:0 4px 16px rgba(0,0,0,0.07); overflow:hidden;">
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#1A2A4A,#243B6A); padding:20px 28px; color:white;">
+      <h2 style="margin:0; font-size:1.2rem; font-weight:700; font-family:'Noto Sans Bengali',sans-serif; display:flex; align-items:center; gap:8px;">
+        <i class="fas fa-clipboard-check" style="color:#F57224;"></i> আপনার তথ্য দিন
+      </h2>
+      <p style="margin:4px 0 0; font-size:0.78rem; color:rgba(255,255,255,0.65); font-family:'Noto Sans Bengali',sans-serif;">সঠিক তথ্য দিলে দ্রুত ডেলিভারি পাবেন</p>
+    </div>
+
+    <div style="padding:28px;">
+      <form id="checkoutForm" style="display:flex; flex-direction:column; gap:18px;">
+        
+        <!-- Name -->
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; color:#616161; margin-bottom:7px; font-family:'Noto Sans Bengali',sans-serif;">
+            <i class="fas fa-user" style="color:#F57224; margin-right:5px;"></i> পুরো নাম *
+          </label>
+          <input type="text" id="firstName" name="firstName" placeholder="আপনার পুরো নাম লিখুন" required
+            style="width:100%; padding:11px 14px; border:1.5px solid #E0E0E0; border-radius:6px; font-size:0.9rem; outline:none; box-sizing:border-box; color:#212121; font-family:'Noto Sans Bengali',sans-serif; transition:border 0.2s;"
+            onfocus="this.style.borderColor='#F57224'; this.style.boxShadow='0 0 0 3px rgba(245,114,36,0.1)'"
+            onblur="this.style.borderColor='#E0E0E0'; this.style.boxShadow='none'">
+        </div>
+
+        <!-- Address -->
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; color:#616161; margin-bottom:7px; font-family:'Noto Sans Bengali',sans-serif;">
+            <i class="fas fa-map-marker-alt" style="color:#F57224; margin-right:5px;"></i> গ্রাম/বাজারের নাম *
+          </label>
+          <input type="text" id="street" name="street" placeholder="গ্রাম/বাজারের নাম, রোড নম্বর ইত্যাদি" required
+            style="width:100%; padding:11px 14px; border:1.5px solid #E0E0E0; border-radius:6px; font-size:0.9rem; outline:none; box-sizing:border-box; font-family:'Noto Sans Bengali',sans-serif; transition:border 0.2s;"
+            onfocus="this.style.borderColor='#F57224'" onblur="this.style.borderColor='#E0E0E0'">
+        </div>
+
+        <!-- City + District -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; color:#616161; margin-bottom:7px; font-family:'Noto Sans Bengali',sans-serif;">থানা *</label>
+            <input type="text" id="city" name="city" placeholder="থানার নাম" required
+              style="width:100%; padding:11px 14px; border:1.5px solid #E0E0E0; border-radius:6px; font-size:0.9rem; outline:none; box-sizing:border-box; font-family:'Noto Sans Bengali',sans-serif; transition:border 0.2s;"
+              onfocus="this.style.borderColor='#F57224'" onblur="this.style.borderColor='#E0E0E0'">
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; color:#616161; margin-bottom:7px; font-family:'Noto Sans Bengali',sans-serif;">জেলা *</label>
+            <input type="text" id="district" name="district" placeholder="জেলার নাম" required
+              style="width:100%; padding:11px 14px; border:1.5px solid #E0E0E0; border-radius:6px; font-size:0.9rem; outline:none; box-sizing:border-box; font-family:'Noto Sans Bengali',sans-serif; transition:border 0.2s;"
+              onfocus="this.style.borderColor='#F57224'" onblur="this.style.borderColor='#E0E0E0'">
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; color:#616161; margin-bottom:7px; font-family:'Noto Sans Bengali',sans-serif;">
+            <i class="fas fa-phone" style="color:#F57224; margin-right:5px;"></i> ফোন নম্বর *
+          </label>
+          <div style="display:flex;">
+            <span style="padding:11px 12px; background:#F5F5F5; border:1.5px solid #E0E0E0; border-right:none; border-radius:6px 0 0 6px; font-size:0.88rem; color:#616161; font-weight:600; white-space:nowrap;">+88</span>
+            <input type="tel" id="phone" name="phone" placeholder="01XXXXXXXXX" required
+              style="flex:1; padding:11px 14px; border:1.5px solid #E0E0E0; border-left:none; border-radius:0 6px 6px 0; font-size:0.9rem; outline:none; color:#212121; transition:border 0.2s;"
+              onfocus="this.style.borderColor='#F57224'" onblur="this.style.borderColor='#E0E0E0'">
+          </div>
+        </div>
+
+        <!-- Payment -->
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; color:#616161; margin-bottom:7px; font-family:'Noto Sans Bengali',sans-serif;">
+            <i class="fas fa-money-bill-wave" style="color:#F57224; margin-right:5px;"></i> পেমেন্ট পদ্ধতি
+          </label>
+          <div style="padding:12px 16px; background:#FFF3EC; border:2px solid #F57224; border-radius:6px; display:flex; align-items:center; gap:10px;">
+            <i class="fas fa-check-circle" style="color:#F57224;"></i>
+            <span style="font-size:0.9rem; font-weight:600; color:#212121; font-family:'Noto Sans Bengali',sans-serif;">ক্যাশ অন ডেলিভারি</span>
+            <span style="margin-left:auto; font-size:0.75rem; color:#F57224; background:white; padding:2px 8px; border-radius:10px; border:1px solid #F57224;">পণ্য পেলে টাকা</span>
+          </div>
+          <input type="hidden" id="payment" name="payment" value="ক্যাশ অন ডেলিভারি">
+        </div>
+
+        <!-- Submit -->
+        <button type="submit"
+          style="background:#F57224; color:white; border:none; padding:15px; border-radius:6px; font-size:1rem; font-weight:700; cursor:pointer; transition:background 0.2s; margin-top:6px; display:flex; align-items:center; justify-content:center; gap:8px; font-family:'Noto Sans Bengali',sans-serif;"
+          onmouseover="this.style.background='#D4601A'" onmouseout="this.style.background='#F57224'">
+          <i class="fas fa-check-circle"></i> অর্ডার কনফার্ম করুন
+        </button>
+        <p style="text-align:center; font-size:0.75rem; color:#9E9E9E; margin:4px 0 0; font-family:'Noto Sans Bengali',sans-serif;">
+          <i class="fas fa-lock" style="margin-right:4px; color:#00A650;"></i> আপনার তথ্য সম্পূর্ণ নিরাপদ
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="/js/checkout.js"></script>

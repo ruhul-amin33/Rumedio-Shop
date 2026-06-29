@@ -1,0 +1,138 @@
+<div style="max-width:860px;margin:0 auto;padding:8px 0;">
+<div style="background:#fff;border-radius:12px;border:1px solid #EBEBEB;box-shadow:0 4px 16px rgba(0,0,0,0.07);overflow:hidden;">
+  <div style="background:linear-gradient(135deg,#1A2A4A,#243B6A);padding:20px 28px;color:#fff;display:flex;align-items:center;gap:10px;">
+    <i class="fas fa-plus-circle" style="color:#F57224;font-size:1.1rem;"></i>
+    <h2 style="margin:0;font-size:1.05rem;font-weight:700;font-family:'Inter',sans-serif;">নতুন পণ্য যোগ করুন</h2>
+  </div>
+  <div style="padding:28px;">
+  <form action="/dashboard/products-add" method="POST" enctype="multipart/form-data">
+  <style>
+  .ap-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .ap-full{grid-column:1/-1;}
+  .ap-label{display:block;font-size:0.79rem;font-weight:600;color:#616161;margin-bottom:6px;}
+  .ap-inp{width:100%;padding:10px 13px;border:1.5px solid #E0E0E0;border-radius:7px;font-size:0.87rem;outline:none;color:#212121;background:#FAFAFA;transition:border 0.15s;box-sizing:border-box;font-family:'Noto Sans Bengali',sans-serif;}
+  .ap-inp:focus{border-color:#F57224;background:#fff;}
+  @media(max-width:580px){.ap-grid{grid-template-columns:1fr;}}
+  </style>
+
+    <div class="ap-grid">
+      <div>
+        <label class="ap-label">পণ্যের নাম *</label>
+        <input class="ap-inp" type="text" name="name" placeholder="পণ্যের নাম লিখুন" required>
+      </div>
+      <div>
+        <label class="ap-label">মূল্য (৳) *</label>
+        <input class="ap-inp" type="number" step="0.01" name="price" placeholder="0.00" required min="0">
+      </div>
+
+      <div>
+        <label class="ap-label">ক্যাটাগরি *</label>
+        <select class="ap-inp" name="category" id="categorySelect" required onchange="toggleCustomCat(this.value)">
+          <option value="" disabled selected>ক্যাটাগরি বেছে নিন</option>
+          <optgroup label="📷 ক্যামেরা & লেন্স">
+            <option value="Telephoto Lens">টেলিফটো লেন্স</option>
+            <option value="Wide Angle Lens">ওয়াইড অ্যাঙ্গেল লেন্স</option>
+            <option value="Macro Lens">ম্যাক্রো লেন্স</option>
+            <option value="Fisheye Lens">ফিশআই লেন্স</option>
+            <option value="Lens">লেন্স (সাধারণ)</option>
+            <option value="Camera">ক্যামেরা</option>
+            <option value="Action Camera">অ্যাকশন ক্যামেরা</option>
+          </optgroup>
+          <optgroup label="🔧 এক্সেসরিজ">
+            <option value="Tripod">ট্রাইপড</option>
+            <option value="Phone Clip">ফোন ক্লিপ</option>
+            <option value="Camera Bag">ক্যামেরা ব্যাগ</option>
+            <option value="Memory Card">মেমোরি কার্ড</option>
+            <option value="ND Filter">ND ফিল্টার</option>
+            <option value="Accessories">অ্যাকসেসরিজ</option>
+          </optgroup>
+          <optgroup label="💡 লাইটিং">
+            <option value="Ring Light">রিং লাইট</option>
+            <option value="LED Panel">LED প্যানেল</option>
+            <option value="Lighting">লাইটিং</option>
+          </optgroup>
+          <option value="Other">🔹 অন্যান্য</option>
+          <option value="custom">✏️ কাস্টম ক্যাটাগরি লিখুন</option>
+        </select>
+      </div>
+      <div id="customCatWrap" style="display:none;">
+        <label class="ap-label">কাস্টম ক্যাটাগরি লিখুন *</label>
+        <input class="ap-inp" type="text" name="custom_category" id="customCatInput" placeholder="নিজের ক্যাটাগরি লিখুন">
+      </div>
+
+      <div>
+        <label class="ap-label">ডিসকাউন্ট</label>
+        <select class="ap-inp" name="is_discount_enabled" id="discountToggle" onchange="toggleDiscount(this.value)">
+          <option value="0">ডিসকাউন্ট নেই</option>
+          <option value="1">ডিসকাউন্ট আছে</option>
+        </select>
+      </div>
+      <div id="discountWrap" style="display:none;">
+        <label class="ap-label">ডিসকাউন্ট মূল্য (৳)</label>
+        <input class="ap-inp" type="number" step="0.01" name="discounted_price" id="discountPrice" placeholder="0.00" min="0">
+      </div>
+
+      <div>
+        <label class="ap-label">স্টক *</label>
+        <input class="ap-inp" type="number" name="stock" placeholder="0" required min="0">
+      </div>
+      <div>
+        <label class="ap-label">ব্র্যান্ড (ঐচ্ছিক)</label>
+        <input class="ap-inp" type="text" name="brand" placeholder="যেমন: Apexel, Aukey">
+      </div>
+
+      <div class="ap-full">
+        <label class="ap-label">বিবরণ *</label>
+        <textarea class="ap-inp" name="description" rows="6" required style="resize:vertical;" placeholder="পণ্যের বিবরণ লিখুন..."></textarea>
+      </div>
+
+      <div class="ap-full">
+        <label class="ap-label">পণ্যের ছবি * (একাধিক ছবি দিতে পারেন)</label>
+        <label for="imageInput" style="display:flex;align-items:center;gap:10px;padding:14px 16px;border:2px dashed #E0E0E0;border-radius:8px;cursor:pointer;transition:all 0.15s;font-size:0.85rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;" onmouseover="this.style.borderColor='#F57224';this.style.color='#F57224'" onmouseout="this.style.borderColor='#E0E0E0';this.style.color='#9E9E9E'">
+          <i class="fas fa-cloud-upload-alt" style="font-size:1.4rem;"></i>
+          <span>ছবি বেছে নিন বা ড্র্যাগ করুন (JPG, PNG, WEBP)</span>
+        </label>
+        <input type="file" id="imageInput" name="images" accept="image/*" multiple required style="display:none;" onchange="previewImages(this)">
+        <div id="previewContainer" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"></div>
+      </div>
+
+      <div class="ap-full" style="display:flex;gap:10px;">
+        <button type="submit" style="flex:1;background:#F57224;color:#fff;border:none;padding:13px;border-radius:7px;font-size:0.92rem;font-weight:700;cursor:pointer;transition:background 0.15s;display:flex;align-items:center;justify-content:center;gap:8px;" onmouseover="this.style.background='#D4601A'" onmouseout="this.style.background='#F57224'">
+          <i class="fas fa-plus"></i> পণ্য যোগ করুন
+        </button>
+        <a href="/dashboard/products-manage" style="background:#F5F5F5;color:#616161;border:1.5px solid #E0E0E0;padding:13px 22px;border-radius:7px;font-size:0.88rem;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:6px;" onmouseover="this.style.background='#E0E0E0'" onmouseout="this.style.background='#F5F5F5'">বাতিল</a>
+      </div>
+    </div>
+  </form>
+  </div>
+</div>
+</div>
+
+<script>
+function toggleCustomCat(v) {
+  const wrap  = document.getElementById('customCatWrap');
+  const input = document.getElementById('customCatInput');
+  wrap.style.display = v === 'custom' ? 'block' : 'none';
+  input.required = v === 'custom';
+}
+function toggleDiscount(v) {
+  const wrap  = document.getElementById('discountWrap');
+  const input = document.getElementById('discountPrice');
+  wrap.style.display = v === '1' ? 'block' : 'none';
+  input.required = v === '1';
+}
+function previewImages(input) {
+  const container = document.getElementById('previewContainer');
+  container.innerHTML = '';
+  Array.from(input.files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const div = document.createElement('div');
+      div.style.cssText = 'position:relative;';
+      div.innerHTML = `<img src="${e.target.result}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:2px solid #F57224;">`;
+      container.appendChild(div);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+</script>

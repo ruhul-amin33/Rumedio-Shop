@@ -1,0 +1,83 @@
+<div style="min-height:75vh;display:flex;align-items:center;justify-content:center;padding:24px 16px;background:#F5F5F5;">
+<div style="background:#fff;max-width:580px;width:100%;border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,0.1);overflow:hidden;border:1px solid #EBEBEB;">
+
+  <!-- Header -->
+  <div style="background:linear-gradient(135deg,#1A2A4A,#243B6A);padding:36px 28px;text-align:center;color:#fff;">
+    <div style="width:68px;height:68px;background:#00A650;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 6px 20px rgba(0,166,80,0.35);">
+      <i class="fas fa-check" style="font-size:1.8rem;"></i>
+    </div>
+    <h1 style="margin:0 0 6px;font-size:1.7rem;font-weight:700;font-family:'Noto Sans Bengali',sans-serif;">ধন্যবাদ! 🎉</h1>
+    <p style="margin:0;color:rgba(255,255,255,0.7);font-size:0.88rem;font-family:'Noto Sans Bengali',sans-serif;">আপনার অর্ডার সফলভাবে গ্রহণ করা হয়েছে</p>
+  </div>
+
+  <div style="padding:28px;">
+    <!-- Order ID + Tracking Code -->
+    <% if (typeof orderId !== 'undefined' && orderId) { %>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+      <div style="background:#F9F9F9;border-radius:8px;padding:14px;text-align:center;border:1px solid #F0F0F0;">
+        <p style="margin:0 0 4px;font-size:0.72rem;color:#9E9E9E;text-transform:uppercase;letter-spacing:0.5px;font-family:'Inter',sans-serif;">অর্ডার আইডি</p>
+        <p style="margin:0;font-size:1.1rem;font-weight:800;color:#212121;font-family:'Inter',sans-serif;">#<%= orderId %></p>
+      </div>
+      <% if (typeof trackingCode !== 'undefined' && trackingCode) { %>
+      <div style="background:#FFF3EC;border-radius:8px;padding:14px;text-align:center;border:1px solid #FED7AA;">
+        <p style="margin:0 0 4px;font-size:0.72rem;color:#F57224;text-transform:uppercase;letter-spacing:0.5px;font-family:'Inter',sans-serif;">ট্র্যাকিং কোড</p>
+        <p style="margin:0;font-size:0.95rem;font-weight:800;color:#F57224;font-family:'Inter',sans-serif;letter-spacing:1px;word-break:break-all;"><%= trackingCode %></p>
+      </div>
+      <% } %>
+    </div>
+    <% } %>
+
+    <!-- Items -->
+    <% if (typeof orderItems !== 'undefined' && orderItems && orderItems.length > 0) { %>
+    <div style="background:#fff;border:1px solid #EBEBEB;border-radius:10px;overflow:hidden;margin-bottom:18px;">
+      <table style="width:100%;border-collapse:collapse;font-size:0.82rem;">
+        <thead><tr style="background:#F8F8F8;border-bottom:1px solid #E0E0E0;">
+          <th style="padding:10px 14px;text-align:left;font-weight:600;color:#9E9E9E;text-transform:uppercase;font-size:0.7rem;">পণ্য</th>
+          <th style="padding:10px 14px;text-align:center;font-weight:600;color:#9E9E9E;text-transform:uppercase;font-size:0.7rem;">পরিমাণ</th>
+          <th style="padding:10px 14px;text-align:right;font-weight:600;color:#9E9E9E;text-transform:uppercase;font-size:0.7rem;">মোট</th>
+        </tr></thead>
+        <tbody>
+          <% let grand=0; orderItems.forEach(item => { grand+=Number(item.total_price); %>
+          <tr style="border-bottom:1px solid #F5F5F5;">
+            <td style="padding:10px 14px;color:#212121;font-family:'Noto Sans Bengali',sans-serif;"><%= item.product_name %></td>
+            <td style="padding:10px 14px;text-align:center;color:#616161;"><%= item.quantity %></td>
+            <td style="padding:10px 14px;text-align:right;color:#F57224;font-weight:600;">৳<%= Number(item.total_price).toFixed(2) %></td>
+          </tr>
+          <% }) %>
+          <tr style="background:#FFF3EC;border-top:2px solid #F57224;">
+            <td colspan="2" style="padding:12px 14px;font-weight:700;color:#212121;font-family:'Noto Sans Bengali',sans-serif;">সর্বমোট</td>
+            <td style="padding:12px 14px;text-align:right;font-size:1.1rem;font-weight:800;color:#F57224;font-family:'Noto Sans Bengali',sans-serif;">৳<%= grand.toFixed(2) %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <% } %>
+
+    <!-- Tracking note -->
+    <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:14px 16px;margin-bottom:20px;display:flex;gap:10px;align-items:flex-start;">
+      <i class="fas fa-info-circle" style="color:#2563EB;margin-top:2px;flex-shrink:0;"></i>
+      <div>
+        <p style="margin:0 0 4px;font-size:0.84rem;font-weight:600;color:#1E40AF;font-family:'Noto Sans Bengali',sans-serif;">আপনার ট্র্যাকিং কোড সেভ করুন!</p>
+        <p style="margin:0;font-size:0.8rem;color:#3B82F6;line-height:1.6;font-family:'Noto Sans Bengali',sans-serif;">উপরের ট্র্যাকিং কোডটি দিয়ে যেকোনো সময় আপনার অর্ডারের অবস্থান জানতে পারবেন। শীঘ্রই আমাদের টিম আপনার সাথে যোগাযোগ করবে।</p>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <a href="/" style="flex:1;min-width:130px;text-align:center;background:#1A2A4A;color:#fff;padding:12px;border-radius:7px;font-size:0.88rem;font-weight:700;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px;font-family:'Noto Sans Bengali',sans-serif;transition:background 0.15s;" onmouseover="this.style.background='#F57224'" onmouseout="this.style.background='#1A2A4A'">
+        <i class="fas fa-home"></i> হোমপেজ
+      </a>
+      <a href="/orders-tracking" style="flex:1;min-width:130px;text-align:center;background:#F57224;color:#fff;padding:12px;border-radius:7px;font-size:0.88rem;font-weight:700;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px;font-family:'Noto Sans Bengali',sans-serif;transition:background 0.15s;" onmouseover="this.style.background='#D4601A'" onmouseout="this.style.background='#F57224'">
+        <i class="fas fa-search"></i> অর্ডার ট্র্যাক করুন
+      </a>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+// Clear cart on this page
+localStorage.removeItem('cart');
+localStorage.removeItem('cartSummary');
+localStorage.removeItem('deliveryCharge');
+localStorage.removeItem('deliveryArea');
+document.querySelectorAll('#cart-count').forEach(el => { el.textContent='0'; el.style.display='none'; });
+</script>

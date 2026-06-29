@@ -1,0 +1,103 @@
+<div style="max-width:1100px; margin:0 auto; padding:24px 16px; display:grid; grid-template-columns:220px 1fr; gap:24px;" class="all-products-layout">
+<style>
+@media(max-width:900px){
+  .all-products-layout{ grid-template-columns:1fr !important; }
+  #filterSidebar{ display:none; }
+  #filterSidebar.open{ display:block !important; }
+}
+</style>
+
+  <!-- SIDEBAR FILTER -->
+  <aside id="filterSidebar" style="position:sticky; top:80px; height:fit-content;">
+    <div style="background:white; border-radius:8px; border:1px solid #E0E0E0; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+      <h4 style="margin:0 0 16px; font-size:0.9rem; font-weight:700; color:#212121; font-family:'Inter',sans-serif; display:flex; align-items:center; gap:6px; padding-bottom:10px; border-bottom:2px solid #F57224;">
+        <i class="fas fa-filter" style="color:#F57224;"></i> ফিলটার
+      </h4>
+      <form action="/products/category/all" method="get">
+        <label style="font-size:0.8rem; font-weight:600; color:#616161; margin-bottom:10px; display:block; font-family:'Noto Sans Bengali',sans-serif;">দাম নির্বাচন করুন (Tk)</label>
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
+          <input type="number" name="min" id="minPrice" value="<%= min %>" placeholder="কম"
+            style="width:50%; padding:8px 10px; border:1.5px solid #E0E0E0; border-radius:6px; font-size:0.82rem; text-align:center; outline:none;"
+            onfocus="this.style.borderColor='#F57224'" onblur="this.style.borderColor='#E0E0E0'">
+          <input type="number" name="max" id="maxPrice" value="<%= max %>" placeholder="বেশি"
+            style="width:50%; padding:8px 10px; border:1.5px solid #E0E0E0; border-radius:6px; font-size:0.82rem; text-align:center; outline:none;"
+            onfocus="this.style.borderColor='#F57224'" onblur="this.style.borderColor='#E0E0E0'">
+        </div>
+        <div style="position:relative; height:36px; margin-bottom:14px;">
+          <div id="sliderTrack" style="position:absolute; top:50%; width:100%; height:4px; border-radius:2px; background:#E0E0E0; transform:translateY(-50%); z-index:0;"></div>
+          <input type="range" id="rangeMin" min="0" max="<%= max %>" value="0" step="1"
+            style="position:absolute; top:50%; width:100%; transform:translateY(-50%); appearance:none; height:4px; background:transparent; pointer-events:none; z-index:10;">
+          <input type="range" id="rangeMax" min="0" max="<%= max %>" value="<%= max %>" step="1"
+            style="position:absolute; top:50%; width:100%; transform:translateY(-50%); appearance:none; height:4px; background:transparent; pointer-events:none; z-index:10;">
+        </div>
+        <input type="hidden" name="sort" value="<%= sort %>">
+        <button type="submit"
+          style="width:100%; background:#F57224; color:white; border:none; padding:10px; border-radius:6px; font-size:0.85rem; font-weight:700; cursor:pointer; transition:background 0.2s; font-family:'Noto Sans Bengali',sans-serif;"
+          onmouseover="this.style.background='#D4601A'" onmouseout="this.style.background='#F57224'">
+          <i class="fas fa-search" style="margin-right:5px;"></i> ফিলটার করুন
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- MAIN PRODUCTS -->
+  <main>
+    <!-- Top bar -->
+    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; margin-bottom:20px; gap:12px;">
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        <h1 style="margin:0; font-size:1.15rem; font-weight:700; color:#212121; font-family:'Inter',sans-serif; display:flex; align-items:center; gap:6px;">
+          <span style="display:inline-block; width:4px; height:18px; background:#F57224; border-radius:2px;"></span>
+          পণ্য সমূহ
+        </h1>
+        <button id="filterToggle" onclick="document.getElementById('filterSidebar').classList.toggle('open')"
+          style="background:#1A2A4A; color:white; border:none; padding:7px 14px; border-radius:6px; font-size:0.8rem; font-weight:600; cursor:pointer; display:none;" class="lg:hidden">
+          <i class="fas fa-filter" style="margin-right:5px;"></i> ফিলটার
+        </button>
+      </div>
+      <form method="GET" action="/products/category/all" id="sortForm">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <label style="font-size:0.82rem; font-weight:600; color:#616161; white-space:nowrap; font-family:'Noto Sans Bengali',sans-serif;">সাজান:</label>
+          <select id="sort" name="sort" onchange="document.getElementById('sortForm').submit()"
+            style="padding:8px 12px; border:1.5px solid #E0E0E0; border-radius:6px; font-size:0.82rem; outline:none; background:white; cursor:pointer; font-family:'Noto Sans Bengali',sans-serif;"
+            onfocus="this.style.borderColor='#F57224'" onblur="this.style.borderColor='#E0E0E0'">
+            <option value="default" <%= sort === 'DEFAULT' ? 'selected' : '' %>>জনপ্রিয়</option>
+            <option value="asc" <%= sort === 'ASC' ? 'selected' : '' %>>দাম: কম থেকে বেশি</option>
+            <option value="desc" <%= sort === 'DESC' ? 'selected' : '' %>>দাম: বেশি থেকে কম</option>
+          </select>
+          <input type="hidden" id="minField" name="min" value="<%= min %>">
+          <input type="hidden" id="maxField" name="max" value="<%= max %>">
+        </div>
+      </form>
+    </div>
+
+    <!-- Product grid -->
+    <%- include('../partials/productGrid') %>
+
+    <!-- Pagination -->
+    <div style="display:flex; justify-content:center; gap:8px; margin-top:32px; flex-wrap:wrap;">
+      <% if (currentPage > 1) { %>
+        <a href="?page=<%= currentPage - 1 %>&sort=<%= sort %>&min=<%= min %>&max=<%= max %>"
+          style="display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:6px; background:white; border:1.5px solid #E0E0E0; color:#616161; text-decoration:none; font-weight:600; font-size:0.85rem;" onmouseover="this.style.borderColor='#F57224'; this.style.color='#F57224'" onmouseout="this.style.borderColor='#E0E0E0'; this.style.color='#616161'">←</a>
+      <% } %>
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <% if (i === currentPage) { %>
+          <span style="display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:6px; background:#F57224; color:white; font-weight:700; font-size:0.85rem;"><%= i %></span>
+        <% } else { %>
+          <a href="?page=<%= i %>&sort=<%= sort %>&min=<%= min %>&max=<%= max %>"
+            style="display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:6px; background:white; border:1.5px solid #E0E0E0; color:#616161; text-decoration:none; font-weight:600; font-size:0.85rem;" onmouseover="this.style.borderColor='#F57224'; this.style.color='#F57224'" onmouseout="this.style.borderColor='#E0E0E0'; this.style.color='#616161'"><%= i %></a>
+        <% } %>
+      <% } %>
+      <% if (currentPage < totalPages) { %>
+        <a href="?page=<%= currentPage + 1 %>&sort=<%= sort %>&min=<%= min %>&max=<%= max %>"
+          style="display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:6px; background:white; border:1.5px solid #E0E0E0; color:#616161; text-decoration:none; font-weight:600; font-size:0.85rem;" onmouseover="this.style.borderColor='#F57224'; this.style.color='#F57224'" onmouseout="this.style.borderColor='#E0E0E0'; this.style.color='#616161'">→</a>
+      <% } %>
+    </div>
+  </main>
+</div>
+
+<style>
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:1.2rem;height:1.2rem;border-radius:50%;background:#F57224;cursor:pointer;pointer-events:auto;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,0.2);}
+input[type=range]::-moz-range-thumb{width:1.2rem;height:1.2rem;border-radius:50%;background:#F57224;cursor:pointer;pointer-events:auto;}
+@media(max-width:900px){#filterToggle{display:block !important;}}
+</style>
+<script src="/js/allproducts.js"></script>

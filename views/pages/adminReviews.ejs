@@ -1,0 +1,48 @@
+<div style="padding:8px 0;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+    <h2 style="margin:0;font-size:1.2rem;font-weight:700;color:#212121;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:8px;">
+      <i class="fas fa-star" style="color:#FFC107;"></i> Reviews
+      <span style="background:#FFF8E1;color:#F59E0B;font-size:0.72rem;font-weight:700;padding:2px 10px;border-radius:20px;border:1px solid #FCD34D;"><%= reviews.length %></span>
+    </h2>
+  </div>
+  <% if (!reviews.length) { %>
+    <div style="background:#fff;border-radius:10px;padding:60px;text-align:center;border:1px solid #E0E0E0;">
+      <i class="fas fa-star-half-alt" style="font-size:2rem;color:#E0E0E0;display:block;margin-bottom:12px;"></i>
+      <p style="color:#9E9E9E;font-size:0.9rem;font-family:'Noto Sans Bengali',sans-serif;">কোনো রিভিউ নেই।</p>
+    </div>
+  <% } else { %>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;">
+    <% reviews.forEach(r => { %>
+    <div style="background:#fff;border-radius:10px;border:1px solid #E0E0E0;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,0.05);<%= !r.is_approved?'border-left:3px solid #F59E0B':'' %>">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+        <div style="display:flex;gap:2px;">
+          <% for(let i=0;i<5;i++){%><i class="fas fa-star" style="color:<%= i<r.rating?'#FFC107':'#E0E0E0' %>;font-size:0.8rem;"></i><%}%>
+        </div>
+        <span style="font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;<%= r.is_approved?'background:#ECFDF5;color:#059669;border:1px solid #A7F3D0':'background:#FFF8E1;color:#F59E0B;border:1px solid #FCD34D' %>">
+          <%= r.is_approved ? '✓ অনুমোদিত' : '⏳ অপেক্ষমান' %>
+        </span>
+      </div>
+      <p style="font-size:0.83rem;color:#212121;font-weight:600;margin:0 0 4px;font-family:'Noto Sans Bengali',sans-serif;"><%= r.reviewer_name %></p>
+      <% if(r.product_name){%><p style="font-size:0.73rem;color:#9E9E9E;margin:0 0 8px;">পণ্য: <%= r.product_name %></p><%}%>
+      <p style="font-size:0.82rem;color:#616161;margin:0 0 10px;line-height:1.65;font-family:'Noto Sans Bengali',sans-serif;"><%= r.comment %></p>
+      <% if(r.image_names){
+        let imgs=[];try{imgs=JSON.parse(r.image_names);}catch{}
+        imgs.forEach(img=>{ %>
+          <img src="<%= /^https?:\/\//.test(img) ? img : '/images/' + img %>" style="width:56px;height:56px;object-fit:cover;border-radius:6px;border:1px solid #E0E0E0;margin-right:5px;">
+        <% }) } %>
+      <p style="font-size:0.72rem;color:#BDBDBD;margin:8px 0 12px;"><%= new Date(r.created_at).toLocaleString('en-BD',{dateStyle:'short',timeStyle:'short'}) %></p>
+      <div style="display:flex;gap:8px;">
+        <% if(!r.is_approved){ %>
+        <form action="/dashboard/reviews/approve/<%= r.id %>" method="POST" style="flex:1;">
+          <button type="submit" style="width:100%;background:#00A650;color:#fff;border:none;padding:7px;border-radius:5px;font-size:0.78rem;font-weight:600;cursor:pointer;">✓ অনুমোদন করুন</button>
+        </form>
+        <% } %>
+        <form action="/dashboard/reviews/delete/<%= r.id %>" method="POST" onsubmit="return confirm('Delete?')" style="flex:1;">
+          <button type="submit" style="width:100%;background:#FEF2F2;color:#DC2626;border:1px solid #FCA5A5;padding:7px;border-radius:5px;font-size:0.78rem;font-weight:600;cursor:pointer;">🗑 মুছুন</button>
+        </form>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+  <% } %>
+</div>

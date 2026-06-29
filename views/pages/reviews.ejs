@@ -1,0 +1,73 @@
+<div style="padding:8px 0;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+    <h2 style="margin:0;font-size:1.15rem;font-weight:700;color:#212121;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:8px;">
+      <i class="fas fa-star" style="color:#F59E0B;"></i> গ্রাহকদের রিভিউ
+      <span style="background:#FFF3EC;color:#F57224;font-size:0.72rem;font-weight:700;padding:2px 10px;border-radius:20px;border:1px solid #FED7AA;"><%= reviews.length %></span>
+    </h2>
+  </div>
+
+  <% if (!reviews.length) { %>
+    <div style="background:#fff;border-radius:10px;padding:60px;text-align:center;border:1px solid #E0E0E0;">
+      <i class="fas fa-star" style="font-size:2.5rem;color:#E0E0E0;display:block;margin-bottom:12px;"></i>
+      <p style="color:#9E9E9E;font-size:0.9rem;margin:0;font-family:'Noto Sans Bengali',sans-serif;">কোনো রিভিউ নেই।</p>
+    </div>
+  <% } else { %>
+  <div style="background:#fff;border-radius:10px;border:1px solid #E0E0E0;box-shadow:0 2px 8px rgba(0,0,0,0.05);overflow:hidden;">
+    <div style="overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;font-size:0.83rem;min-width:600px;">
+      <thead><tr style="background:#F8F8F8;border-bottom:2px solid #E0E0E0;">
+        <th style="padding:12px 14px;text-align:left;font-weight:700;color:#9E9E9E;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.5px;">পণ্য</th>
+        <th style="padding:12px 14px;text-align:left;font-weight:700;color:#9E9E9E;font-size:0.72rem;text-transform:uppercase;">গ্রাহক</th>
+        <th style="padding:12px 14px;text-align:center;font-weight:700;color:#9E9E9E;font-size:0.72rem;text-transform:uppercase;">রেটিং</th>
+        <th style="padding:12px 14px;text-align:left;font-weight:700;color:#9E9E9E;font-size:0.72rem;text-transform:uppercase;">মন্তব্য</th>
+        <th style="padding:12px 14px;text-align:center;font-weight:700;color:#9E9E9E;font-size:0.72rem;text-transform:uppercase;">ছবি</th>
+        <th style="padding:12px 14px;text-align:center;font-weight:700;color:#9E9E9E;font-size:0.72rem;text-transform:uppercase;">Status</th>
+        <th style="padding:12px 14px;text-align:center;font-weight:700;color:#9E9E9E;font-size:0.72rem;text-transform:uppercase;">Action</th>
+      </tr></thead>
+      <tbody>
+      <% reviews.forEach((r, i) => { %>
+        <tr style="border-bottom:1px solid #F0F0F0;background:<%= i%2===0?'white':'#FAFAFA' %>;" onmouseover="this.style.background='#FFF3EC'" onmouseout="this.style.background='<%= i%2===0?'white':'#FAFAFA' %>'">
+          <td style="padding:12px 14px;color:#212121;font-weight:500;max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="<%= r.product_name %>"><%= r.product_name || '#'+r.product_id %></td>
+          <td style="padding:12px 14px;">
+            <p style="margin:0;font-weight:600;color:#212121;font-size:0.83rem;font-family:'Noto Sans Bengali',sans-serif;"><%= r.reviewer_name %></p>
+            <% if(r.phone){ %><p style="margin:0;color:#9E9E9E;font-size:0.74rem;"><%= r.phone %></p><% } %>
+          </td>
+          <td style="padding:12px 14px;text-align:center;">
+            <div style="display:flex;justify-content:center;gap:1px;">
+              <% for(let s=1;s<=5;s++){ %><i class="<%= s<=r.rating?'fas':'far' %> fa-star" style="color:#FFC107;font-size:0.75rem;"></i><% } %>
+            </div>
+          </td>
+          <td style="padding:12px 14px;color:#616161;max-width:200px;font-size:0.82rem;font-family:'Noto Sans Bengali',sans-serif;"><%= r.comment ? r.comment.substring(0,80)+(r.comment.length>80?'…':'') : '—' %></td>
+          <td style="padding:12px 14px;text-align:center;">
+            <% if(r.image_name){ %>
+              <% const rImg = /^https?:\/\//.test(r.image_name) ? r.image_name : '/images/' + r.image_name; %>
+              <a href="<%= rImg %>" target="_blank">
+                <img src="<%= rImg %>" style="width:44px;height:44px;object-fit:cover;border-radius:5px;border:1px solid #E0E0E0;">
+              </a>
+            <% } else { %><span style="color:#E0E0E0;">—</span><% } %>
+          </td>
+          <td style="padding:12px 14px;text-align:center;">
+            <span style="background:<%= r.is_approved?'#ECFDF5':'#FFF8E1' %>;color:<%= r.is_approved?'#059669':'#F59E0B' %>;font-size:0.71rem;font-weight:700;padding:2px 9px;border-radius:20px;border:1px solid <%= r.is_approved?'#A7F3D0':'#FCD34D' %>;">
+              <%= r.is_approved ? '✅ Approved' : '⏳ Pending' %>
+            </span>
+          </td>
+          <td style="padding:12px 14px;text-align:center;">
+            <div style="display:flex;gap:6px;justify-content:center;">
+              <% if(!r.is_approved){ %>
+              <form action="/dashboard/reviews/approve/<%= r.id %>" method="POST">
+                <button style="background:#ECFDF5;color:#059669;border:1px solid #A7F3D0;padding:5px 12px;border-radius:5px;font-size:0.74rem;font-weight:600;cursor:pointer;" onmouseover="this.style.background='#059669';this.style.color='white'" onmouseout="this.style.background='#ECFDF5';this.style.color='#059669'">Approve</button>
+              </form>
+              <% } %>
+              <form action="/dashboard/reviews/delete/<%= r.id %>" method="POST" onsubmit="return confirm('Delete this review?')">
+                <button style="background:#FEF2F2;color:#DC2626;border:1px solid #FCA5A5;padding:5px 12px;border-radius:5px;font-size:0.74rem;font-weight:600;cursor:pointer;" onmouseover="this.style.background='#DC2626';this.style.color='white'" onmouseout="this.style.background='#FEF2F2';this.style.color='#DC2626'">Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <% } %>
+</div>

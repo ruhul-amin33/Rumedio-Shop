@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>লগইন — RumeDio Shop</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      min-height:100vh;
+      background:linear-gradient(135deg,#1A2A4A 0%,#243B6A 60%,#1A3A5C 100%);
+      display:flex;align-items:center;justify-content:center;
+      padding:20px;font-family:'Inter','Noto Sans Bengali',sans-serif;
+    }
+    .card{
+      background:#fff;border-radius:16px;
+      box-shadow:0 20px 60px rgba(0,0,0,0.3);
+      padding:40px 36px;width:100%;max-width:420px;
+      border-top:4px solid #F57224;
+      animation:slideUp 0.35s ease;
+    }
+    @keyframes slideUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+    /* Logo */
+    .logo-area{text-align:center;margin-bottom:28px;}
+    .logo-icon{
+      width:64px;height:64px;
+      background:linear-gradient(135deg,#1A2A4A,#243B6A);
+      border-radius:16px;display:flex;align-items:center;justify-content:center;
+      margin:0 auto 12px;box-shadow:0 4px 16px rgba(26,42,74,0.3);
+    }
+    .logo-icon i{color:#F57224;font-size:1.6rem;}
+    .logo-name{font-size:1rem;font-weight:800;color:#1A2A4A;}
+
+    h1{font-size:1.35rem;font-weight:700;color:#212121;text-align:center;margin-bottom:24px;
+       font-family:'Noto Sans Bengali',sans-serif;}
+
+    /* Alert */
+    .alert-error{
+      background:#FEF2F2;border:1px solid #FCA5A5;color:#DC2626;
+      padding:10px 14px;border-radius:8px;margin-bottom:18px;
+      font-size:0.83rem;display:flex;align-items:center;gap:7px;
+      font-family:'Noto Sans Bengali',sans-serif;
+    }
+
+    /* Form */
+    .form-group{margin-bottom:16px;}
+    label{display:block;font-size:0.79rem;font-weight:600;color:#616161;margin-bottom:6px;letter-spacing:0.2px;}
+
+    /* Input wrapper — key fix for eye icon */
+    .input-wrap{
+      position:relative;
+      display:flex;
+      align-items:center;
+    }
+    .input-wrap .left-icon{
+      position:absolute;left:13px;
+      color:#BDBDBD;font-size:0.82rem;
+      pointer-events:none;z-index:2;
+    }
+    .input-wrap input{
+      width:100%;
+      padding:11px 42px 11px 38px; /* right padding makes room for eye icon */
+      border:1.5px solid #E0E0E0;border-radius:8px;
+      font-size:0.9rem;outline:none;color:#212121;
+      background:#FAFAFA;transition:all 0.2s;
+      font-family:'Noto Sans Bengali',sans-serif;
+    }
+    /* phone input no right-side icon */
+    .input-wrap.no-right input{ padding-right:14px; }
+
+    .input-wrap input:focus{
+      border-color:#F57224;background:#fff;
+      box-shadow:0 0 0 3px rgba(245,114,36,0.12);
+    }
+    /* eye toggle button — INSIDE the input visually */
+    .eye-btn{
+      position:absolute;right:0;
+      width:42px;height:100%;
+      background:none;border:none;cursor:pointer;
+      color:#BDBDBD;font-size:0.88rem;
+      display:flex;align-items:center;justify-content:center;
+      border-radius:0 8px 8px 0;
+      transition:color 0.15s;
+      flex-shrink:0;
+    }
+    .eye-btn:hover{color:#F57224;}
+
+    /* Submit button */
+    .btn-submit{
+      width:100%;padding:13px;
+      background:#F57224;color:#fff;
+      border:none;border-radius:8px;
+      font-size:0.94rem;font-weight:700;cursor:pointer;
+      transition:all 0.2s;margin-top:8px;
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      font-family:'Noto Sans Bengali',sans-serif;
+      box-shadow:0 4px 14px rgba(245,114,36,0.3);
+    }
+    .btn-submit:hover{background:#D4601A;transform:translateY(-1px);box-shadow:0 6px 18px rgba(245,114,36,0.4);}
+    .btn-submit:active{transform:translateY(0);}
+    .btn-submit:disabled{background:#BDBDBD;cursor:not-allowed;transform:none;box-shadow:none;}
+
+    /* Divider */
+    .divider{
+      text-align:center;margin:20px 0;color:#BDBDBD;font-size:0.78rem;
+      position:relative;
+    }
+    .divider::before,.divider::after{
+      content:'';position:absolute;top:50%;
+      width:42%;height:1px;background:#F0F0F0;
+    }
+    .divider::before{left:0;} .divider::after{right:0;}
+
+    /* Links */
+    .links{display:flex;flex-direction:column;align-items:center;gap:10px;}
+    .link-text{font-size:0.82rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;}
+    .link-text a{color:#F57224;font-weight:600;text-decoration:none;}
+    .link-text a:hover{text-decoration:underline;}
+    .back-link{
+      font-size:0.8rem;color:#9E9E9E;text-decoration:none;
+      display:inline-flex;align-items:center;gap:5px;transition:color 0.15s;
+    }
+    .back-link:hover{color:#F57224;}
+
+    @media(max-width:480px){
+      .card{padding:28px 18px;}
+      h1{font-size:1.15rem;}
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+
+  <!-- Logo -->
+  <div class="logo-area">
+    <div class="logo-icon"><i class="fas fa-bag-shopping"></i></div>
+    <div class="logo-name">RumeDio Shop</div>
+  </div>
+
+  <h1>লগইন করুন</h1>
+
+  <!-- Error -->
+  <% if (message && message !== '') { %>
+    <div class="alert-error">
+      <i class="fas fa-exclamation-circle"></i>
+      <%= message %>
+    </div>
+  <% } %>
+
+  <form action="/auth/login" method="POST" id="loginForm" autocomplete="on">
+    <!-- Phone -->
+    <div class="form-group">
+      <label for="phone">ফোন নম্বর</label>
+      <div class="input-wrap no-right">
+        <i class="fas fa-phone-alt left-icon"></i>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          placeholder="01XXXXXXXXX"
+          required
+          autocomplete="tel"
+          maxlength="15"
+          pattern="[0-9+\-\s]+"
+          title="শুধু সংখ্যা দিন"
+        >
+      </div>
+    </div>
+
+    <!-- Password -->
+    <div class="form-group">
+      <label for="password">পাসওয়ার্ড</label>
+      <div class="input-wrap">
+        <i class="fas fa-lock left-icon"></i>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="পাসওয়ার্ড"
+          required
+          autocomplete="current-password"
+          maxlength="128"
+        >
+        <button type="button" class="eye-btn" id="eyeBtn" aria-label="পাসওয়ার্ড দেখুন">
+          <i class="fas fa-eye" id="eyeIcon"></i>
+        </button>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-submit" id="loginBtn">
+      <i class="fas fa-sign-in-alt"></i> লগইন
+    </button>
+  </form>
+
+  <div class="divider">অথবা</div>
+
+  <div class="links">
+    <p class="link-text">অ্যাকাউন্ট নেই? <a href="/auth/register">রেজিস্ট্রেশন করুন</a></p>
+    <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> হোম পেজে ফিরুন</a>
+  </div>
+
+</div>
+
+<script>
+  /* ── Eye toggle ── */
+  const eyeBtn  = document.getElementById('eyeBtn');
+  const eyeIcon = document.getElementById('eyeIcon');
+  const pwInput = document.getElementById('password');
+
+  eyeBtn.addEventListener('click', () => {
+    const show = pwInput.type === 'password';
+    pwInput.type      = show ? 'text' : 'password';
+    eyeIcon.className = show ? 'fas fa-eye-slash' : 'fas fa-eye';
+    eyeBtn.style.color = show ? '#F57224' : '';
+  });
+
+  /* ── Prevent double submit ── */
+  document.getElementById('loginForm').addEventListener('submit', function() {
+    const btn = document.getElementById('loginBtn');
+    btn.disabled   = true;
+    btn.innerHTML  = '<i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...';
+  });
+</script>
+</body>
+</html>
