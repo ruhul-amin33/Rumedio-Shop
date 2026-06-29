@@ -12,6 +12,10 @@ dotenv.config();
 const app  = express();
 const port = process.env.PORT || 3000;
 
+/* ── Trust Render's reverse proxy so req.secure works correctly ── */
+/* Without this, secure:true session cookies never get set on Render/Heroku */
+app.set('trust proxy', 1);
+
 /* ── Security headers (no helmet needed) ── */
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
