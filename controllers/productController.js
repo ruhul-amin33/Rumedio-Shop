@@ -71,7 +71,11 @@ exports.get_AllProducts = async (req, res) => {
       ? `SELECT * FROM products WHERE discounted_price BETWEEN ? AND ? ORDER BY ${orderBy} LIMIT ? OFFSET ?`
       : `SELECT * FROM products WHERE category = ? AND discounted_price BETWEEN ? AND ? ORDER BY ${orderBy} LIMIT ? OFFSET ?`;
     const values = categoryName === 'all' ? [min, max, limit, offset] : [categoryName, min, max, limit, offset];
-    const [rows] = await db.execute(query, values);
+    // NOTE: db.query() used here instead of db.execute() — MySQL 8's prepared-statement
+    // protocol throws "ER_WRONG_ARGUMENTS: Incorrect arguments to mysqld_stmt_execute"
+    // when LIMIT/OFFSET are passed as placeholders via execute(). query() avoids this
+    // (values are still safely escaped, this is not a SQL-injection risk).
+    const [rows] = await db.query(query, values);
 
     // Get category counts
     const [categoryCounts] = await db.execute(`
@@ -119,7 +123,7 @@ exports.post_AllProducts = async (req, res) => {
     );
     const totalItems = parseInt(countResult[0].count);
 
-    const [rows] = await db.execute(
+    const [rows] = await db.query(
       'SELECT * FROM products WHERE price >= ? AND price <= ? ORDER BY price ASC LIMIT ? OFFSET ?',
       [minPrice, maxPrice, limit, offset]
     );
