@@ -49,12 +49,19 @@ exports.postAddToCart = async (req, res) => {
     const delivery   = deliveryArea === 'dhaka' ? 80 : 130;
 
     /* 1 — insert order */
+    // BUG FIX: `user_id` is an INT column meant for an actual logged-in user's id —
+    // it was previously being set to `cleanPhone` (a 13+ digit phone number), which
+    // overflows INT's range and throws "Out of range value for column 'user_id'".
+    // Use the real session user id if logged in, otherwise NULL for guest checkout
+    // (the phone number is already stored correctly in the `phone` column below).
+    const sessionUserId = req.session?.user?.id || null;
+
     const [orderResult] = await db.execute(
       `INSERT INTO orders
          (user_id, first_name, street, city, district, phone,
           payment_method, total, delivery_area)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [cleanPhone, firstName.trim(), street.trim(), city.trim(),
+      [sessionUserId, firstName.trim(), street.trim(), city.trim(),
        district.trim(), cleanPhone,
        payment || 'ক্যাশ অন ডেলিভারি', total, deliveryArea || 'unknown']
     );
