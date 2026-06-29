@@ -86,6 +86,24 @@ app.use('/products',  productRoutes);
 app.use('/cart',      cartRoutes);
 app.use('/dashboard', dashboardRoutes);
 
+/* ── TEMP DEBUG: hit this URL in the browser to see the REAL DB error ── */
+/* Remove this route once the DB issue is fixed — it can leak connection info. */
+app.get('/health/db', async (req, res) => {
+  const db = require('./config/db');
+  try {
+    const [rows] = await db.execute('SELECT 1 AS ok');
+    res.json({ success: true, result: rows[0] });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      code: err.code,
+      errno: err.errno,
+      sqlState: err.sqlState,
+      message: err.message
+    });
+  }
+});
+
 /* ── 404 handler ── */
 app.use((req, res) => {
   res.status(404).render('pages/home', {
