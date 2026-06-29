@@ -47,10 +47,27 @@
         <input class="ot-inp" type="text" name="trackingCode"
           placeholder="LBD-00001-XYZ"
           value="<%= typeof trackingCode !== 'undefined' ? trackingCode : '' %>"
-          required autocomplete="off" style="text-transform:uppercase;">
+          autocomplete="off" style="text-transform:uppercase;">
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px;margin:16px 0;">
+        <div style="flex:1;height:1px;background:#E0E0E0;"></div>
+        <span style="font-size:0.76rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;">অথবা</span>
+        <div style="flex:1;height:1px;background:#E0E0E0;"></div>
+      </div>
+
+      <label style="display:block;font-size:0.8rem;font-weight:600;color:#616161;margin-bottom:7px;font-family:'Noto Sans Bengali',sans-serif;">
+        <i class="fas fa-phone" style="color:#F57224;margin-right:5px;"></i> ফোন নম্বর দিয়ে খুঁজুন
+      </label>
+      <div class="ot-inp-wrap">
+        <i class="fas fa-phone"></i>
+        <input class="ot-inp" type="tel" name="phone"
+          placeholder="01XXXXXXXXX"
+          value="<%= typeof phone !== 'undefined' ? phone : '' %>"
+          autocomplete="off">
       </div>
       <p style="font-size:0.76rem;color:#9E9E9E;margin:8px 0 0;font-family:'Noto Sans Bengali',sans-serif;">
-        💡 ট্র্যাকিং কোড আপনার অর্ডার কনফার্মেশন পেজে পাওয়া যাবে। যেমন: <strong style="color:#F57224;">LBD-00001-A2B</strong>
+        💡 ট্র্যাকিং কোড না থাকলে, অর্ডার দেওয়ার সময় যেই ফোন নম্বর দিয়েছিলেন সেটা দিয়েও আপনার সব অর্ডার দেখতে পারবেন।
       </p>
       <button type="submit" class="ot-btn"><i class="fas fa-search"></i> ট্র্যাক করুন</button>
     </form>
@@ -64,8 +81,7 @@
   <% } %>
 
   <!-- Result -->
-  <% if (typeof order !== 'undefined' && order && order.length > 0) {
-    const o = order[0];
+  <% if (typeof orders !== 'undefined' && orders && orders.length > 0) {
     const statusMap = {
       pending:    { label:'অপেক্ষমাণ', bg:'#FFF8E1', color:'#F59E0B', border:'#FCD34D', step:1 },
       processing: { label:'প্রসেসিং', bg:'#EFF6FF', color:'#2563EB', border:'#93C5FD', step:2 },
@@ -73,15 +89,25 @@
       delivered:  { label:'ডেলিভারড ✅', bg:'#ECFDF5', color:'#059669', border:'#6EE7B7', step:4 },
       cancelled:  { label:'বাতিল ❌', bg:'#FEF2F2', color:'#DC2626', border:'#FCA5A5', step:0 },
     };
-    const st = statusMap[o.order_status] || { label:o.order_status, bg:'#F5F5F5', color:'#616161', border:'#E0E0E0', step:1 };
     const steps = ['অর্ডার নিশ্চিত', 'প্রসেসিং', 'শিপড', 'ডেলিভারড'];
     const stepIcons = ['fas fa-check', 'fas fa-cog', 'fas fa-truck', 'fas fa-home'];
   %>
-  <div class="ot-result">
+
+  <% if (orders.length > 1) { %>
+  <p style="font-size:0.84rem;color:#616161;margin:0 0 14px;font-family:'Noto Sans Bengali',sans-serif;">
+    এই নম্বরে <strong style="color:#F57224;"><%= orders.length %>টি</strong> অর্ডার পাওয়া গেছে —
+  </p>
+  <% } %>
+
+  <% orders.forEach((o, idx) => {
+    const st = statusMap[o.order_status] || { label:o.order_status, bg:'#F5F5F5', color:'#616161', border:'#E0E0E0', step:1 };
+    const orderTotal = o.items.reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0);
+  %>
+  <div class="ot-result" style="<%= idx > 0 ? 'margin-top:18px;' : '' %>">
     <div class="ot-result-header">
       <div>
         <p style="margin:0 0 3px;color:rgba(255,255,255,0.6);font-size:0.72rem;font-family:'Noto Sans Bengali',sans-serif;">ট্র্যাকিং কোড</p>
-        <p class="ot-tracking-code"><%= o.tracking_code %></p>
+        <p class="ot-tracking-code"><%= o.tracking_code || ('অর্ডার #' + o.id) %></p>
       </div>
       <span class="ot-status" style="background:<%= st.bg %>;color:<%= st.color %>;border:1px solid <%= st.border %>;"><%= st.label %></span>
     </div>
@@ -126,7 +152,7 @@
           <th style="padding:10px 12px;text-align:right;font-weight:600;color:#9E9E9E;text-transform:uppercase;font-size:0.71rem;">মূল্য</th>
         </tr></thead>
         <tbody>
-          <% let total=0; order.forEach((item,i) => { total+=parseFloat(item.price)*item.quantity; %>
+          <% o.items.forEach((item,i) => { %>
           <tr style="border-bottom:1px solid #F5F5F5;background:<%= i%2===0?'#fff':'#FAFAFA' %>;">
             <td style="padding:10px 12px;color:#212121;font-weight:500;font-family:'Noto Sans Bengali',sans-serif;"><%= item.product_name || '#'+item.product_id %></td>
             <td style="padding:10px 12px;text-align:center;color:#616161;"><%= item.quantity %></td>
@@ -135,11 +161,12 @@
           <% }) %>
           <tr style="background:#FFF3EC;border-top:2px solid #F57224;">
             <td colspan="2" style="padding:12px;font-weight:700;color:#212121;font-family:'Noto Sans Bengali',sans-serif;">সর্বমোট</td>
-            <td style="padding:12px;text-align:right;font-size:1.05rem;font-weight:800;color:#F57224;font-family:'Noto Sans Bengali',sans-serif;">৳<%= total.toFixed(2) %></td>
+            <td style="padding:12px;text-align:right;font-size:1.05rem;font-weight:800;color:#F57224;font-family:'Noto Sans Bengali',sans-serif;">৳<%= orderTotal.toFixed(2) %></td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
+  <% }) %>
   <% } %>
 </div>
