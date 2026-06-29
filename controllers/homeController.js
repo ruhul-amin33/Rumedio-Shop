@@ -253,38 +253,89 @@ exports.getOrdersTracking = (req, res) => {
    //// const db = req.app.locals.db;
   res.render("pages/ordersTracking", {
     title: "Order Tracking",
-    order: null,
-    order_status: null
+    orders: null,
+    trackingCode: '',
+    phone: '',
+    error: null
   });
 
 };
 
 
-/** ---------------- TRACK ORDER ---------------- */
+/** ---------------- TRACK ORDER (by tracking code OR phone number) ---------------- */
 exports.postOrdersTracking = async (req, res) => {
-  const { trackingCode } = req.body;
-  const renderPage = (order, error) => res.render('pages/ordersTracking', {
-    title: 'Order Tracking', order: order || null, error: error || null
+  const { trackingCode, phone } = req.body;
+
+  const renderPage = (orders, error) => res.render('pages/ordersTracking', {
+    title: 'Order Tracking',
+    orders: orders || null,
+    error: error || null,
+    trackingCode: trackingCode || '',
+    phone: phone || ''
   });
 
-  if (!trackingCode || trackingCode.trim() === '') {
-    return renderPage(null, 'ট্র্যাকিং কোড দিন।');
+  const hasCode  = trackingCode && trackingCode.trim() !== '';
+  const hasPhone = phone && phone.replace(/\D/g, '').length >= 6;
+
+  if (!hasCode && !hasPhone) {
+    return renderPage(null, 'ট্র্যাকিং কোড বা ফোন নম্বর দিন।');
   }
+
   try {
-    const code = trackingCode.trim().toUpperCase();
-    const [rows] = await db.execute(
-      `SELECT o.id, o.first_name, o.phone, o.street, o.city, o.district,
-              o.payment_method, o.total, o.delivery_area, o.created_at,
-              o.tracking_code, oi.product_id, oi.quantity, oi.price, oi.order_status,
-              p.name AS product_name
-       FROM orders o
-       JOIN order_items oi ON o.id = oi.order_id
-       LEFT JOIN products p ON oi.product_id = p.id
-       WHERE o.tracking_code = ?`,
-      [code]
-    );
-    if (!rows.length) return renderPage(null, 'এই ট্র্যাকিং কোডে কোনো অর্ডার পাওয়া যায়নি।');
-    renderPage(rows);
+    const baseSelect = `
+      SELECT o.id, o.first_name, o.phone, o.street, o.city, o.district,
+             o.payment_method, o.total, o.delivery_area, o.created_at,
+             o.tracking_code, oi.product_id, oi.quantity, oi.price, oi.order_status,
+             p.name AS product_name
+      FROM orders o
+      JOIN order_items oi ON o.id = oi.order_id
+      LEFT JOIN products p ON oi.product_id = p.id`;
+
+    let rows;
+    if (hasCode) {
+      const code = trackingCode.trim().toUpperCase();
+      [rows] = await db.execute(
+        `${baseSelect} WHERE o.tracking_code = ? ORDER BY o.created_at DESC`,
+        [code]
+      );
+    } else {
+      // Phone numbers are stored in different formats (+8801..., 8801..., 01...).
+      // Match on the last 10 digits (the core BD mobile number) so any format works.
+      const last10 = phone.replace(/\D/g, '').slice(-10);
+      [rows] = await db.execute(
+        `${baseSelect} WHERE RIGHT(REGEXP_REPLACE(o.phone, '[^0-9]', ''), 10) = ? ORDER BY o.created_at DESC`,
+        [last10]
+      );
+    }
+
+    if (!rows.length) {
+      return renderPage(null, hasCode
+        ? 'এই ট্র্যাকিং কোডে কোনো অর্ডার পাওয়া যায়নি।'
+        : 'এই ফোন নম্বরে কোনো অর্ডার পাওয়া যায়নি।');
+    }
+
+    // Group the joined rows back into one object per order (an order can have many items)
+    const grouped = {};
+    const orderIds = [];
+    rows.forEach(r => {
+      if (!grouped[r.id]) {
+        grouped[r.id] = {
+          id: r.id, first_name: r.first_name, phone: r.phone, street: r.street,
+          city: r.city, district: r.district, payment_method: r.payment_method,
+          total: r.total, delivery_area: r.delivery_area, created_at: r.created_at,
+          tracking_code: r.tracking_code, order_status: r.order_status, items: []
+        };
+        orderIds.push(r.id);
+      }
+      grouped[r.id].items.push({
+        product_id: r.product_id,
+        product_name: r.product_name,
+        quantity: r.quantity,
+        price: r.price
+      });
+    });
+
+    renderPage(orderIds.map(id => grouped[id]));
   } catch (err) {
     console.error(err);
     res.status(500).send('Tracking failed');
