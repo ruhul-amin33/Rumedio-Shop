@@ -32,15 +32,15 @@
 <div class="ot-wrap">
   <div class="ot-hero">
     <div class="ot-hero-ico"><i class="fas fa-shipping-fast"></i></div>
-    <h1 style="font-size:1.5rem;font-weight:700;color:#212121;margin:0 0 6px;font-family:'Inter',sans-serif;">অর্ডার ট্র্যাকিং</h1>
-    <p style="color:#9E9E9E;font-size:0.84rem;margin:0;font-family:'Noto Sans Bengali',sans-serif;">আপনার ট্র্যাকিং কোড দিয়ে অর্ডারের অবস্থান জানুন</p>
+    <h1 style="font-size:1.5rem;font-weight:700;color:#212121;margin:0 0 6px;font-family:'Inter',sans-serif;"><%= t('tracking_title') %></h1>
+    <p style="color:#9E9E9E;font-size:0.84rem;margin:0;font-family:'Noto Sans Bengali',sans-serif;"><%= t('tracking_hint') %></p>
   </div>
 
   <!-- Form -->
   <div class="ot-form-card">
     <form action="/ordersTracking" method="POST">
       <label style="display:block;font-size:0.8rem;font-weight:600;color:#616161;margin-bottom:7px;font-family:'Noto Sans Bengali',sans-serif;">
-        <i class="fas fa-qrcode" style="color:#F57224;margin-right:5px;"></i> ট্র্যাকিং কোড
+        <i class="fas fa-qrcode" style="color:#F57224;margin-right:5px;"></i> <%= t('tracking_code_label') %>
       </label>
       <div class="ot-inp-wrap">
         <i class="fas fa-search"></i>
@@ -52,24 +52,24 @@
 
       <div style="display:flex;align-items:center;gap:10px;margin:16px 0;">
         <div style="flex:1;height:1px;background:#E0E0E0;"></div>
-        <span style="font-size:0.76rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;">অথবা</span>
+        <span style="font-size:0.76rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;"><%= t('tracking_or') %></span>
         <div style="flex:1;height:1px;background:#E0E0E0;"></div>
       </div>
 
       <label style="display:block;font-size:0.8rem;font-weight:600;color:#616161;margin-bottom:7px;font-family:'Noto Sans Bengali',sans-serif;">
-        <i class="fas fa-phone" style="color:#F57224;margin-right:5px;"></i> ফোন নম্বর দিয়ে খুঁজুন
+        <i class="fas fa-phone" style="color:#F57224;margin-right:5px;"></i> <%= t('tracking_phone_label') %>
       </label>
       <div class="ot-inp-wrap">
         <i class="fas fa-phone"></i>
         <input class="ot-inp" type="tel" name="phone"
-          placeholder="01XXXXXXXXX"
+          placeholder="<%= t('tracking_phone_placeholder') %>"
           value="<%= typeof phone !== 'undefined' ? phone : '' %>"
           autocomplete="off">
       </div>
       <p style="font-size:0.76rem;color:#9E9E9E;margin:8px 0 0;font-family:'Noto Sans Bengali',sans-serif;">
-        💡 ট্র্যাকিং কোড না থাকলে, অর্ডার দেওয়ার সময় যেই ফোন নম্বর দিয়েছিলেন সেটা দিয়েও আপনার সব অর্ডার দেখতে পারবেন।
+        💡 <%= t('tracking_hint') %>
       </p>
-      <button type="submit" class="ot-btn"><i class="fas fa-search"></i> ট্র্যাক করুন</button>
+      <button type="submit" class="ot-btn"><i class="fas fa-search"></i> <%= t('tracking_btn') %></button>
     </form>
   </div>
 
@@ -83,19 +83,19 @@
   <!-- Result -->
   <% if (typeof orders !== 'undefined' && orders && orders.length > 0) {
     const statusMap = {
-      pending:    { label:'অপেক্ষমাণ', bg:'#FFF8E1', color:'#F59E0B', border:'#FCD34D', step:1 },
-      processing: { label:'প্রসেসিং', bg:'#EFF6FF', color:'#2563EB', border:'#93C5FD', step:2 },
-      shipped:    { label:'শিপড', bg:'#EDE9FE', color:'#7C3AED', border:'#C4B5FD', step:3 },
-      delivered:  { label:'ডেলিভারড ✅', bg:'#ECFDF5', color:'#059669', border:'#6EE7B7', step:4 },
-      cancelled:  { label:'বাতিল ❌', bg:'#FEF2F2', color:'#DC2626', border:'#FCA5A5', step:0 },
+      pending:    { label:t('status_pending'), bg:'#FFF8E1', color:'#F59E0B', border:'#FCD34D', step:1 },
+      processing: { label:t('status_processing'), bg:'#EFF6FF', color:'#2563EB', border:'#93C5FD', step:2 },
+      shipped:    { label:t('status_shipped'), bg:'#EDE9FE', color:'#7C3AED', border:'#C4B5FD', step:3 },
+      delivered:  { label:t('status_delivered')+' ✅', bg:'#ECFDF5', color:'#059669', border:'#6EE7B7', step:4 },
+      cancelled:  { label:t('status_cancelled')+' ❌', bg:'#FEF2F2', color:'#DC2626', border:'#FCA5A5', step:0 },
     };
-    const steps = ['অর্ডার নিশ্চিত', 'প্রসেসিং', 'শিপড', 'ডেলিভারড'];
+    const steps = [t('tracking_step_confirmed'), t('tracking_step_processing'), t('tracking_step_shipped'), t('tracking_step_delivered')];
     const stepIcons = ['fas fa-check', 'fas fa-cog', 'fas fa-truck', 'fas fa-home'];
   %>
 
   <% if (orders.length > 1) { %>
   <p style="font-size:0.84rem;color:#616161;margin:0 0 14px;font-family:'Noto Sans Bengali',sans-serif;">
-    এই নম্বরে <strong style="color:#F57224;"><%= orders.length %>টি</strong> অর্ডার পাওয়া গেছে —
+    <%- t('tracking_multi_found', { n: orders.length }) %>
   </p>
   <% } %>
 
@@ -106,8 +106,8 @@
   <div class="ot-result" style="<%= idx > 0 ? 'margin-top:18px;' : '' %>">
     <div class="ot-result-header">
       <div>
-        <p style="margin:0 0 3px;color:rgba(255,255,255,0.6);font-size:0.72rem;font-family:'Noto Sans Bengali',sans-serif;">ট্র্যাকিং কোড</p>
-        <p class="ot-tracking-code"><%= o.tracking_code || ('অর্ডার #' + o.id) %></p>
+        <p style="margin:0 0 3px;color:rgba(255,255,255,0.6);font-size:0.72rem;font-family:'Noto Sans Bengali',sans-serif;"><%= t('tracking_code_label') %></p>
+        <p class="ot-tracking-code"><%= o.tracking_code || (t('tracking_order_hash') + o.id) %></p>
       </div>
       <span class="ot-status" style="background:<%= st.bg %>;color:<%= st.color %>;border:1px solid <%= st.border %>;"><%= st.label %></span>
     </div>
@@ -125,7 +125,7 @@
         <div class="ot-step-ico"><i class="<%= stepIcons[i] %>"></i></div>
         <div style="padding-top:6px;">
           <p class="ot-step-label"><%= step %></p>
-          <p class="ot-step-sub"><%= cls === 'done' ? '✅ সম্পন্ন' : cls === 'current' ? '⏳ চলমান' : '⏸ অপেক্ষমাণ' %></p>
+          <p class="ot-step-sub"><%= cls === 'done' ? '✅ ' + t('tracking_done') : cls === 'current' ? '⏳ ' + t('tracking_inprogress') : '⏸ ' + t('tracking_waiting') %></p>
         </div>
       </div>
       <% }) %>
@@ -136,20 +136,20 @@
     <div style="padding:0 22px 20px;">
       <div style="background:#F9F9F9;border-radius:8px;padding:14px 16px;margin-bottom:14px;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-          <div><p style="margin:0;font-size:0.73rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;">গ্রাহক</p><p style="margin:0;font-size:0.86rem;font-weight:600;color:#212121;font-family:'Noto Sans Bengali',sans-serif;"><%= o.first_name %></p></div>
-          <div><p style="margin:0;font-size:0.73rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;">ফোন</p><p style="margin:0;font-size:0.86rem;font-weight:600;color:#212121;"><%= o.phone %></p></div>
-          <div style="grid-column:1/-1;"><p style="margin:0;font-size:0.73rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;">ঠিকানা</p><p style="margin:0;font-size:0.86rem;color:#212121;font-family:'Noto Sans Bengali',sans-serif;"><%= o.street %>, <%= o.city %>, <%= o.district %></p></div>
-          <div><p style="margin:0;font-size:0.73rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;">পেমেন্ট</p><p style="margin:0;font-size:0.84rem;font-weight:600;color:#212121;font-family:'Noto Sans Bengali',sans-serif;"><%= o.payment_method %></p></div>
-          <div><p style="margin:0;font-size:0.73rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;">ডেলিভারি এলাকা</p><p style="margin:0;font-size:0.84rem;font-weight:600;color:#212121;font-family:'Noto Sans Bengali',sans-serif;"><%= o.delivery_area === 'dhaka' ? '🏙️ ঢাকার ভেতরে' : '🗺️ ঢাকার বাইরে' %></p></div>
+          <div><p style="margin:0;font-size:0.73rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;"><%= t('tracking_customer') %></p><p style="margin:0;font-size:0.86rem;font-weight:600;color:#212121;font-family:'Noto Sans Bengali',sans-serif;"><%= o.first_name %></p></div>
+          <div><p style="margin:0;font-size:0.73rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;"><%= t('checkout_phone') %></p><p style="margin:0;font-size:0.86rem;font-weight:600;color:#212121;"><%= o.phone %></p></div>
+          <div style="grid-column:1/-1;"><p style="margin:0;font-size:0.73rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;"><%= t('tracking_address') %></p><p style="margin:0;font-size:0.86rem;color:#212121;font-family:'Noto Sans Bengali',sans-serif;"><%= o.street %>, <%= o.city %>, <%= o.district %></p></div>
+          <div><p style="margin:0;font-size:0.73rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;"><%= t('tracking_payment') %></p><p style="margin:0;font-size:0.84rem;font-weight:600;color:#212121;font-family:'Noto Sans Bengali',sans-serif;"><%= o.payment_method %></p></div>
+          <div><p style="margin:0;font-size:0.73rem;color:#9E9E9E;font-family:'Noto Sans Bengali',sans-serif;"><%= t('tracking_delivery_area') %></p><p style="margin:0;font-size:0.84rem;font-weight:600;color:#212121;font-family:'Noto Sans Bengali',sans-serif;"><%= o.delivery_area === 'dhaka' ? '🏙️ ' + t('tracking_inside_dhaka') : '🗺️ ' + t('tracking_outside_dhaka') %></p></div>
         </div>
       </div>
 
       <!-- Items -->
       <table style="width:100%;border-collapse:collapse;font-size:0.83rem;">
         <thead><tr style="background:#F5F5F5;border-bottom:1px solid #E0E0E0;">
-          <th style="padding:10px 12px;text-align:left;font-weight:600;color:#9E9E9E;text-transform:uppercase;font-size:0.71rem;">পণ্য</th>
-          <th style="padding:10px 12px;text-align:center;font-weight:600;color:#9E9E9E;text-transform:uppercase;font-size:0.71rem;">পরিমাণ</th>
-          <th style="padding:10px 12px;text-align:right;font-weight:600;color:#9E9E9E;text-transform:uppercase;font-size:0.71rem;">মূল্য</th>
+          <th style="padding:10px 12px;text-align:left;font-weight:600;color:#9E9E9E;text-transform:uppercase;font-size:0.71rem;"><%= t('tracking_product') %></th>
+          <th style="padding:10px 12px;text-align:center;font-weight:600;color:#9E9E9E;text-transform:uppercase;font-size:0.71rem;"><%= t('tracking_qty') %></th>
+          <th style="padding:10px 12px;text-align:right;font-weight:600;color:#9E9E9E;text-transform:uppercase;font-size:0.71rem;"><%= t('tracking_price') %></th>
         </tr></thead>
         <tbody>
           <% o.items.forEach((item,i) => { %>
@@ -160,7 +160,7 @@
           </tr>
           <% }) %>
           <tr style="background:#FFF3EC;border-top:2px solid #F57224;">
-            <td colspan="2" style="padding:12px;font-weight:700;color:#212121;font-family:'Noto Sans Bengali',sans-serif;">সর্বমোট</td>
+            <td colspan="2" style="padding:12px;font-weight:700;color:#212121;font-family:'Noto Sans Bengali',sans-serif;"><%= t('tracking_total') %></td>
             <td style="padding:12px;text-align:right;font-size:1.05rem;font-weight:800;color:#F57224;font-family:'Noto Sans Bengali',sans-serif;">৳<%= orderTotal.toFixed(2) %></td>
           </tr>
         </tbody>
