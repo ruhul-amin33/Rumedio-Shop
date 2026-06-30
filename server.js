@@ -64,6 +64,10 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.set('layout', 'layouts/main');
 
+/* ── Language switch (bn/en) ── */
+const i18nMiddleware = require('./middlewares/i18n');
+app.use(i18nMiddleware);
+
 /* ── Global locals ── */
 app.use((req, res, next) => {
   res.locals.formatTime = (date, fmt = 'YYYY-MM-DD HH:mm:ss') =>
